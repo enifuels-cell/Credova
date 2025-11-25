@@ -29,23 +29,16 @@
       -moz-osx-font-smoothing: grayscale;
       text-rendering: optimizeLegibility;
       min-height: 100vh;
-      max-height: 100vh;
       display: flex;
       flex-direction: column;
-      overflow: hidden;
+      overflow-x: hidden;
       width: 100%;
-      height: 100%;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
       touch-action: none;
       -webkit-user-select: none;
       -webkit-touch-callout: none;
     }
 
-    .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; flex: 1; overflow-y: auto; overflow-x: hidden; width: 100%; touch-action: pan-y; }
+    .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; flex: 1; overflow-y: auto; overflow-x: hidden; width: 100%; touch-action: pan-y; -webkit-overflow-scrolling: touch; }
 
     /* Mobile-first base (apply always under 640px) */
     @media (max-width: 640px) {
