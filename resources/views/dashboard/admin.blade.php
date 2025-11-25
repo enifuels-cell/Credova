@@ -29,36 +29,36 @@
     /* Mobile Responsive */
     @media (max-width: 768px) {
       .container {
-        margin: 16px auto;
-        padding: 0 12px;
+        margin: 10px auto 0;
+        padding: 0 8px;
         flex: 1;
       }
 
       header {
-        padding: 14px 16px;
+        padding: 12px 14px;
         gap: 6px;
       }
 
       .logo {
-        width: 50px !important;
-        height: 50px !important;
+        width: 48px !important;
+        height: 48px !important;
       }
 
       .brand h1 {
-        font-size: 16px !important;
+        font-size: 15px !important;
         letter-spacing: -0.3px;
       }
 
       .brand .tagline {
-        font-size: 10px !important;
+        font-size: 9px !important;
         letter-spacing: 0.2px;
       }
 
       .faq-link {
         position: static;
         transform: none;
-        font-size: 11px;
-        padding: 5px 10px;
+        font-size: 10px;
+        padding: 4px 8px;
         margin-left: auto;
         border-radius: 6px;
       }
@@ -69,15 +69,15 @@
       }
 
       .card {
-        border-radius: 14px;
+        border-radius: 12px;
         margin: 0;
       }
 
       .collectible {
         flex-direction: column;
-        padding: 20px 16px;
+        padding: 18px 14px;
         border-bottom: 1px solid #D9DEE8;
-        gap: 16px;
+        gap: 14px;
       }
 
       .collectible > div:first-child {
@@ -86,23 +86,23 @@
       }
 
       .collectible-label {
-        font-size: 12px;
-        margin-bottom: 8px;
+        font-size: 11px;
+        margin-bottom: 6px;
       }
 
       .amount {
-        font-size: 40px;
-        margin-bottom: 12px;
+        font-size: 38px;
+        margin-bottom: 10px;
       }
 
       .currency {
-        font-size: 24px;
+        font-size: 22px;
         margin-left: 8px;
       }
 
       .total-collected {
-        font-size: 12px;
-        padding: 8px 14px;
+        font-size: 11px;
+        padding: 6px 12px;
       }
 
       .chart {
@@ -118,29 +118,32 @@
       }
 
       .btn-row {
-        padding: 16px 16px;
-        gap: 10px;
-        flex-direction: column;
+        padding: 14px 12px;
+        gap: 8px;
+        flex-direction: row;
       }
 
       .btn {
-        width: 100%;
-        padding: 11px 20px;
-        font-size: 13px;
+        width: 48%;
+        padding: 10px 16px;
+        font-size: 12px;
         border-radius: 20px;
         font-weight: 600;
       }
 
       .stats {
-        padding: 16px 16px;
-        gap: 10px;
-        flex-direction: column;
+        padding: 14px 12px;
+        gap: 8px;
+        flex-direction: row;
       }
 
       .stat {
-        width: 100%;
-        padding: 12px 14px;
-        gap: 12px;
+        width: 32%;
+        padding: 10px 8px;
+        gap: 6px;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
       }
 
       .stat-icon {
@@ -169,31 +172,31 @@
       }
 
       .section-title {
-        margin: 16px 16px 12px;
-        padding: 10px 20px;
-        font-size: 13px;
-        border-radius: 8px;
+        margin: 12px 12px 10px;
+        padding: 8px 16px;
+        font-size: 12px;
+        border-radius: 6px;
       }
 
       .financial-cards {
-        padding: 0 16px 20px;
+        padding: 0 12px 14px;
         grid-template-columns: 1fr;
-        gap: 10px;
+        gap: 8px;
       }
 
       .f-card {
-        padding: 16px 14px;
-        border-radius: 12px;
+        padding: 14px 12px;
+        border-radius: 10px;
       }
 
       .f-label {
-        font-size: 10px;
-        margin-bottom: 8px;
+        font-size: 9px;
+        margin-bottom: 6px;
       }
 
       .f-value {
-        font-size: 26px;
-        margin-bottom: 4px;
+        font-size: 24px;
+        margin-bottom: 2px;
       }
 
       .f-sub {
@@ -201,112 +204,112 @@
       }
 
       .section {
-        margin-top: 16px;
+        margin-top: 12px;
         background: #FFFFFF;
-        border-radius: 14px;
-        padding: 16px;
+        border-radius: 12px;
+        padding: 12px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         border: 1px solid #E2E6EF;
       }
 
       .section h2 {
-        font-size: 15px;
+        font-size: 14px;
         font-weight: 700;
-        margin-bottom: 12px;
+        margin-bottom: 10px;
         color: #134376;
       }
 
       .borrower-item {
-        padding: 12px;
+        padding: 10px;
         flex-direction: column;
-        gap: 8px;
-        border-radius: 10px;
-        margin-bottom: 8px;
+        gap: 6px;
+        border-radius: 8px;
+        margin-bottom: 6px;
       }
 
       .borrower-info {
-        gap: 8px;
+        gap: 6px;
       }
 
       .borrower-name {
-        font-size: 13px;
+        font-size: 12px;
       }
 
       .borrower-loan {
-        font-size: 11px;
+        font-size: 10px;
       }
 
       .borrower-amount {
-        font-size: 11px;
+        font-size: 10px;
       }
 
       .payment-status {
         min-width: auto;
-        font-size: 11px;
-        padding: 6px 10px;
+        font-size: 10px;
+        padding: 5px 8px;
       }
 
       .borrower-performance-item {
-        padding: 12px;
+        padding: 10px;
         flex-direction: column;
-        gap: 10px;
-        border-radius: 10px;
-        margin-bottom: 8px;
+        gap: 8px;
+        border-radius: 8px;
+        margin-bottom: 6px;
       }
 
       .borrower-performance-info {
         flex-direction: row;
-        gap: 10px;
+        gap: 8px;
         align-items: flex-start;
       }
 
       .borrower-details {
-        gap: 4px;
+        gap: 3px;
         flex: 1;
       }
 
       .borrower-credit-score {
         align-items: flex-end;
-        gap: 4px;
-        min-width: 80px;
+        gap: 3px;
+        min-width: 70px;
       }
 
       .borrower-credit-score > div:first-child {
-        font-size: 20px;
+        font-size: 18px;
       }
 
       .borrower-credit-score > div:last-child {
-        font-size: 10px;
-        padding: 2px 6px;
+        font-size: 9px;
+        padding: 2px 4px;
       }
 
       .payment-item {
-        padding: 12px;
+        padding: 10px;
         flex-direction: column;
-        gap: 10px;
-        margin-bottom: 8px;
-        border-radius: 10px;
+        gap: 8px;
+        margin-bottom: 6px;
+        border-radius: 8px;
       }
 
       .payment-info {
-        font-size: 14px;
+        font-size: 13px;
       }
 
       .payment-name {
-        font-size: 13px;
+        font-size: 12px;
         margin-bottom: 2px;
       }
 
       .payment-loan {
-        font-size: 11px;
+        font-size: 10px;
       }
 
       .payment-amount {
-        font-size: 16px;
+        font-size: 14px;
       }
 
       .payment-date {
-        font-size: 11px;
+        font-size: 10px;
       }
 
       .modal-content {
