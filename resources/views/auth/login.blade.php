@@ -81,6 +81,9 @@
             justify-content: center;
             width: 100%;
         }
+
+        .signup-section {
+            display: flex;
             gap: 10px;
             padding-top: 20px;
             border-top: 2px solid rgba(255, 255, 255, 0.2);
