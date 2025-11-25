@@ -12,7 +12,6 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
-      touch-action: none;
     }
 
     @keyframes slideInLeft {
@@ -33,7 +32,6 @@
       flex-direction: column;
       overflow-x: hidden;
       width: 100%;
-      touch-action: none;
       -webkit-user-select: none;
       -webkit-touch-callout: none;
     }
