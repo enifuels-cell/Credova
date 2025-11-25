@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
   <title>Credova - Lending Management</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
@@ -24,6 +24,9 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      overflow-x: hidden;
+      width: 100vw;
+      position: relative;
     }
 
     .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; flex: 1; }
@@ -77,10 +80,11 @@
         flex-direction: row;
         gap: 12px;
         margin-top: 32px;
-        margin-left: -20px;
-        margin-right: -20px;
         padding: 0 20px;
         overflow-x: auto;
+        overflow-y: hidden;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
       }
 
       .metric-card {
@@ -94,8 +98,10 @@
       }
 
       .financial-card {
-        margin: 0 20px;
+        margin: 0;
         margin-top: 48px;
+        margin-left: 20px;
+        margin-right: 20px;
         background: #FFFFFF;
         border-radius: 24px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.06);
