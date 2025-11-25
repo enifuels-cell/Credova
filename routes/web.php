@@ -60,8 +60,36 @@ Route::middleware('auth')->group(function () {
     Route::get('reports/ledger/{borrower}', [ReportController::class,'ledgerByBorrower'])->name('reports.ledger');
 
     // API routes for AJAX calls
+    Route::get('/api/borrowers', function() {
+        $user = Auth::user();
+        $borrowers = $user->borrowers()->with(['loans' => function($q) {
+            $q->orderBy('created_at', 'desc');
+        }])->get();
+
+        $borrowerData = $borrowers->map(function($borrower) {
+            $totalLoanAmount = $borrower->loans->sum('principal');
+            $totalPaid = $borrower->loans->sum(function($loan) {
+                return $loan->payments->sum('amount');
+            });
+
+            return [
+                'id' => $borrower->id,
+                'name' => $borrower->fullName(),
+                'amount' => $totalLoanAmount,
+                'paidAmount' => $totalPaid,
+                'days' => $borrower->loans->first()?->term ?? 0,
+                'dueDate' => $borrower->loans->first()?->first_due_date?->toDateString(),
+                'status' => 'active'
+            ];
+        });
+
+        return response()->json($borrowerData);
+    });
+
     Route::get('/api/loans/aging-details', function() {
-        $loans = \App\Models\Loan::where('status', '!=', 'paid')->with('borrower')->get();
+        $user = Auth::user();
+        $userBorrowers = $user->borrowers()->pluck('id');
+        $loans = \App\Models\Loan::whereIn('borrower_id', $userBorrowers)->where('status', '!=', 'paid')->with('borrower')->get();
         return response()->json($loans);
     });
 

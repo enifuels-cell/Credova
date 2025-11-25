@@ -1412,53 +1412,23 @@
     }
 
     // Sample borrowers data (in production, fetch from backend)
-    const borrowersData = [
-      {
-        id: 1,
-        name: 'Juan Dela Cruz',
-        amount: 50000,
-        paidAmount: 15000,
-        days: 30,
-        dueDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // Due in 3 days
-        status: 'due-soon'
-      },
-      {
-        id: 2,
-        name: 'Maria Santos',
-        amount: 75000,
-        paidAmount: 30000,
-        days: 60,
-        dueDate: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000), // Due in 15 days
-        status: 'on-time'
-      },
-      {
-        id: 3,
-        name: 'Pedro Garcia',
-        amount: 30000,
-        paidAmount: 10000,
-        days: 45,
-        dueDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000), // 2 days delayed
-        status: 'delayed'
-      },
-      {
-        id: 4,
-        name: 'Angela Reyes',
-        amount: 100000,
-        paidAmount: 0,
-        days: 90,
-        dueDate: new Date(Date.now() + 45 * 24 * 60 * 60 * 1000), // Due in 45 days
-        status: 'on-time'
-      },
-      {
-        id: 5,
-        name: 'Carlos Lopez',
-        amount: 45000,
-        paidAmount: 20000,
-        days: 30,
-        dueDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000), // 5 days delayed
-        status: 'delayed'
+    let borrowersData = [];
+
+    // Fetch borrowers data from API
+    async function fetchBorrowersData() {
+      try {
+        const response = await fetch('/api/borrowers');
+        borrowersData = await response.json();
+
+        // If no borrowers, use empty array (user has fresh account)
+        if (!borrowersData || borrowersData.length === 0) {
+          borrowersData = [];
+        }
+      } catch (error) {
+        console.error('Error fetching borrowers:', error);
+        borrowersData = [];
       }
-    ];
+    }
 
     function loadBorrowersList() {
       const borrowersList = document.getElementById('borrowersList');
@@ -1942,8 +1912,11 @@
     }
 
     // Initialize dashboard on page load
-    renderBorrowersPerformance();
-    updateDashboardMetrics();
+    document.addEventListener('DOMContentLoaded', async function() {
+      await fetchBorrowersData();
+      renderBorrowersPerformance();
+      updateDashboardMetrics();
+    });
 
     // Chart using SVG - no JS initialization needed
     updateDashboardMetrics();

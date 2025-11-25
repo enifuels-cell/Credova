@@ -7,7 +7,12 @@ class Borrower extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['first_name','last_name','phone','email','address'];
+    protected $fillable = ['first_name','last_name','phone','email','address','user_id'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function loans()
     {
