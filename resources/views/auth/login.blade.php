@@ -105,7 +105,74 @@
             background: white;
             box-shadow: 0 4px 12px rgba(19, 67, 118, 0.2);
         }
-    </style>
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .login-container {
+                padding: 20px;
+            }
+
+            .login-content {
+                gap: 20px;
+                max-width: 90vw;
+            }
+
+            .form-input {
+                padding: 12px 16px;
+                font-size: 16px;
+            }
+
+            .signin-button {
+                padding: 12px 24px;
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 16px;
+                min-height: auto;
+            }
+
+            .login-content {
+                gap: 16px;
+                max-width: 100%;
+                width: 100%;
+            }
+
+            .logo-section img {
+                width: 120px !important;
+                height: 120px !important;
+            }
+
+            .form-input {
+                padding: 12px 14px;
+                font-size: 16px;
+                border-radius: 10px;
+            }
+
+            .signin-button {
+                padding: 12px 20px;
+                font-size: 13px;
+                border-radius: 10px;
+            }
+
+            .signup-section {
+                gap: 8px;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .signup-text {
+                font-size: 13px;
+            }
+
+            .signup-link {
+                padding: 6px 12px;
+                font-size: 12px;
+                border-radius: 6px;
+            }
+        }
 </head>
 
 <body>

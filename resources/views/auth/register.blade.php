@@ -142,6 +142,90 @@
             flex-direction: column;
             gap: 4px;
         }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .register-container {
+                padding: 20px;
+            }
+
+            .register-content {
+                gap: 20px;
+                max-width: 90vw;
+            }
+
+            .form-input {
+                padding: 12px 16px;
+                font-size: 16px;
+            }
+
+            .signup-button {
+                padding: 12px 24px;
+                font-size: 13px;
+            }
+
+            .form-header h1 {
+                font-size: 22px;
+            }
+
+            .form-header p {
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .register-container {
+                padding: 16px;
+                min-height: auto;
+            }
+
+            .register-content {
+                gap: 16px;
+                max-width: 100%;
+                width: 100%;
+            }
+
+            .logo-section img {
+                width: 120px !important;
+                height: 120px !important;
+            }
+
+            .form-header h1 {
+                font-size: 20px;
+            }
+
+            .form-header p {
+                font-size: 12px;
+            }
+
+            .form-input {
+                padding: 12px 14px;
+                font-size: 16px;
+                border-radius: 10px;
+            }
+
+            .signup-button {
+                padding: 12px 20px;
+                font-size: 13px;
+                border-radius: 10px;
+            }
+
+            .signin-section {
+                gap: 8px;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .signin-text {
+                font-size: 13px;
+            }
+
+            .signin-link {
+                padding: 6px 12px;
+                font-size: 12px;
+                border-radius: 6px;
+            }
+        }
     </style>
 </head>
 

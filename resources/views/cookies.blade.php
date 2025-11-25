@@ -255,6 +255,94 @@
       font-weight: 400;
       letter-spacing: 0.3px;
     }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      body {
+        padding: 20px 16px;
+      }
+
+      .policy-container {
+        max-width: 100%;
+      }
+
+      .policy-header h1 {
+        font-size: 28px;
+      }
+
+      .policy-header {
+        margin-bottom: 40px;
+      }
+
+      .policy-section {
+        padding: 20px;
+        margin-bottom: 16px;
+      }
+
+      .policy-section h2 {
+        font-size: 16px;
+      }
+
+      .policy-section p,
+      .policy-section li {
+        font-size: 14px;
+      }
+
+      .policy-table {
+        font-size: 12px;
+        overflow-x: auto;
+      }
+
+      .back-button {
+        font-size: 13px;
+        padding: 8px 12px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 16px 12px;
+      }
+
+      .policy-header h1 {
+        font-size: 22px;
+      }
+
+      .policy-header {
+        margin-bottom: 24px;
+      }
+
+      .policy-section {
+        padding: 16px;
+        margin-bottom: 12px;
+      }
+
+      .policy-section h2 {
+        font-size: 14px;
+      }
+
+      .policy-section p,
+      .policy-section li {
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      .policy-table {
+        font-size: 11px;
+        overflow-x: auto;
+        display: block;
+      }
+
+      .policy-table th,
+      .policy-table td {
+        padding: 8px 6px;
+      }
+
+      .back-button {
+        font-size: 12px;
+        padding: 6px 10px;
+      }
+    }
   </style>
 </head>
 <body>

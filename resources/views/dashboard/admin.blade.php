@@ -26,6 +26,275 @@
       flex-direction: column;
     }    .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; flex: 1; }
 
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      .container { margin: 20px auto; padding: 0 15px; }
+
+      header {
+        padding: 16px 20px;
+        justify-content: space-between;
+      }
+
+      .logo {
+        width: 60px !important;
+        height: 60px !important;
+      }
+
+      .brand h1 {
+        font-size: 18px !important;
+      }
+
+      .brand .tagline {
+        font-size: 11px !important;
+      }
+
+      .faq-link {
+        position: static;
+        transform: none;
+        font-size: 12px;
+        padding: 6px 12px;
+        margin-left: auto;
+      }
+
+      .faq-link:hover {
+        transform: none;
+      }
+
+      .collectible {
+        flex-direction: column;
+        padding: 24px;
+      }
+
+      .chart {
+        width: 100%;
+        height: 80px;
+        margin-top: 16px;
+      }
+
+      .amount {
+        font-size: 36px;
+      }
+
+      .currency {
+        font-size: 24px;
+      }
+
+      .btn-row {
+        padding: 16px 20px;
+        gap: 12px;
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+        padding: 12px 24px;
+        font-size: 14px;
+      }
+
+      .stats {
+        padding: 16px 20px;
+        gap: 12px;
+        flex-direction: column;
+      }
+
+      .stat {
+        width: 100%;
+        padding: 14px 16px;
+      }
+
+      .financial-cards {
+        padding: 20px;
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .f-card {
+        padding: 16px 20px;
+      }
+
+      .f-label {
+        font-size: 11px;
+      }
+
+      .f-value {
+        font-size: 24px;
+      }
+
+      .section {
+        margin-top: 16px;
+        padding: 20px;
+        border-radius: 12px;
+      }
+
+      .section h2 {
+        font-size: 16px;
+        margin-bottom: 16px;
+      }
+
+      .borrower-item {
+        padding: 12px 16px;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .payment-status {
+        min-width: auto;
+        font-size: 12px;
+      }
+
+      .borrower-performance-item {
+        padding: 12px 16px;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .borrower-performance-info {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .payment-item {
+        padding: 12px 16px;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .modal-content {
+        width: 90vw;
+        max-width: 400px;
+        border-radius: 16px;
+      }
+
+      .modal-header h2 {
+        font-size: 18px;
+      }
+
+      .form-input,
+      .form-group input,
+      .form-group select {
+        font-size: 16px;
+        padding: 12px 14px;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .dashboard-footer {
+        padding: 24px 16px;
+      }
+
+      .footer-copyright {
+        font-size: 12px;
+      }
+
+      .footer-links {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .footer-separator {
+        display: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container { margin: 12px auto; padding: 0 12px; }
+
+      header {
+        padding: 12px 16px;
+      }
+
+      .logo {
+        width: 48px !important;
+        height: 48px !important;
+      }
+
+      .brand h1 {
+        font-size: 16px !important;
+      }
+
+      .brand .tagline {
+        display: none;
+      }
+
+      .faq-link {
+        font-size: 11px;
+        padding: 5px 10px;
+      }
+
+      .card {
+        border-radius: 12px;
+      }
+
+      .amount {
+        font-size: 32px;
+      }
+
+      .currency {
+        font-size: 20px;
+      }
+
+      .total-collected {
+        font-size: 12px;
+        padding: 8px 16px;
+      }
+
+      .btn {
+        padding: 10px 20px;
+        font-size: 13px;
+      }
+
+      .stat {
+        padding: 12px 14px;
+        gap: 8px;
+      }
+
+      .stat-icon {
+        min-width: 28px;
+      }
+
+      .stat-icon svg {
+        width: 28px !important;
+        height: 28px !important;
+      }
+
+      .stat-tag {
+        font-size: 10px;
+      }
+
+      .stat-value {
+        font-size: 18px;
+      }
+
+      .section-title {
+        font-size: 14px;
+        padding: 0 16px;
+      }
+
+      .f-label {
+        font-size: 10px;
+      }
+
+      .f-value {
+        font-size: 20px;
+      }
+
+      .section h2 {
+        font-size: 14px;
+      }
+
+      .borrower-name {
+        font-size: 13px;
+      }
+
+      .borrower-loan,
+      .borrower-amount,
+      .borrower-status {
+        font-size: 11px;
+      }
+    }
+
     /* Header with Glow */
     header {
       background: #134376;
@@ -1151,15 +1420,8 @@
     <!-- Recent Payments -->
     <div class="section">
       <h2>Recent Payments</h2>
-      <div class="payment-item">
-        <div class="payment-info">
-          <div class="payment-name">Juan Dela Cruz</div>
-          <div class="payment-loan">Loan #1</div>
-        </div>
-        <div style="text-align:right;">
-          <div class="payment-amount">₱2,000</div>
-          <div class="payment-date">Nov 03</div>
-        </div>
+      <div id="recentPaymentsList">
+        <!-- Recent payments will be loaded here from API -->
       </div>
     </div>
   </div>
@@ -1205,11 +1467,22 @@
           <div class="form-row">
             <div class="form-group">
               <label for="loanAmount">Loan Amount (₱) *</label>
-              <input type="number" id="loanAmount" name="loanAmount" placeholder="50000" min="1000" required>
+              <input type="number" id="loanAmount" name="loanAmount" placeholder="50000" min="1000" required onchange="updatePayableAmount()">
             </div>
             <div class="form-group">
               <label for="loanDays">Contract Days *</label>
               <input type="number" id="loanDays" name="loanDays" placeholder="30" min="1" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="interestRate">Interest Rate (%) *</label>
+              <input type="number" id="interestRate" name="interestRate" placeholder="10" min="0" step="0.1" required onchange="updatePayableAmount()">
+            </div>
+            <div class="form-group">
+              <label for="payableAmount">Payable Amount (₱) *</label>
+              <input type="number" id="payableAmount" name="payableAmount" placeholder="Auto-calculated" readonly style="background: #f5f7fa; cursor: not-allowed;">
             </div>
           </div>
 
@@ -1748,6 +2021,47 @@
       // Chart uses static SVG
     }
 
+    // Calculate payable amount based on loan amount and interest rate
+    function updatePayableAmount() {
+      const loanAmount = parseFloat(document.getElementById('loanAmount').value) || 0;
+      const interestRate = parseFloat(document.getElementById('interestRate').value) || 0;
+
+      const interest = (loanAmount * interestRate) / 100;
+      const payableAmount = loanAmount + interest;
+
+      document.getElementById('payableAmount').value = payableAmount.toFixed(2);
+    }
+
+    // Load recent payments from API
+    async function loadRecentPayments() {
+      try {
+        const response = await fetch('/api/recent-payments');
+        const payments = await response.json();
+        const paymentsList = document.getElementById('recentPaymentsList');
+
+        if (!payments || payments.length === 0) {
+          paymentsList.innerHTML = '<div style="text-align: center; padding: 40px; color: #64748b;">No recent payments yet</div>';
+          return;
+        }
+
+        paymentsList.innerHTML = payments.map(payment => `
+          <div class="payment-item">
+            <div class="payment-info">
+              <div class="payment-name">${payment.borrower_name}</div>
+              <div class="payment-loan">Loan Amount: ₱${parseInt(payment.loan_amount).toLocaleString()}</div>
+            </div>
+            <div style="text-align:right;">
+              <div class="payment-amount">₱${parseInt(payment.amount).toLocaleString()}</div>
+              <div class="payment-date">${new Date(payment.created_at).toLocaleDateString()}</div>
+            </div>
+          </div>
+        `).join('');
+      } catch (error) {
+        console.error('Error loading recent payments:', error);
+        document.getElementById('recentPaymentsList').innerHTML = '<div style="text-align: center; padding: 40px; color: #64748b;">Unable to load payments</div>';
+      }
+    }
+
     // Update payment schedule info based on frequency
     function updatePaymentSchedule() {
       const frequency = document.getElementById('paymentFrequency').value;
@@ -1914,6 +2228,7 @@
     // Initialize dashboard on page load
     document.addEventListener('DOMContentLoaded', async function() {
       await fetchBorrowersData();
+      await loadRecentPayments();
       renderBorrowersPerformance();
       updateDashboardMetrics();
     });

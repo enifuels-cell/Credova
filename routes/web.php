@@ -93,5 +93,27 @@ Route::middleware('auth')->group(function () {
         return response()->json($loans);
     });
 
+    Route::get('/api/recent-payments', function() {
+        $user = Auth::user();
+        $userBorrowers = $user->borrowers()->pluck('id');
+        $payments = \App\Models\Payment::whereHas('loan', function($q) use ($userBorrowers) {
+            $q->whereIn('borrower_id', $userBorrowers);
+        })
+        ->with('loan.borrower')
+        ->orderBy('created_at', 'desc')
+        ->limit(10)
+        ->get()
+        ->map(function($payment) {
+            return [
+                'id' => $payment->id,
+                'borrower_name' => $payment->loan->borrower->fullName(),
+                'loan_amount' => $payment->loan->principal,
+                'amount' => $payment->amount,
+                'created_at' => $payment->created_at
+            ];
+        });
+        return response()->json($payments);
+    });
+
     Route::get('/api/reports/aging', [ReportController::class,'agingReport'])->name('api.reports.aging');
 });

@@ -174,6 +174,126 @@
       font-weight: 400;
       letter-spacing: 0.3px;
     }
+
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      body {
+        padding: 20px 16px;
+      }
+
+      .faq-container {
+        max-width: 100%;
+      }
+
+      .faq-header h1 {
+        font-size: 28px;
+        margin-bottom: 8px;
+      }
+
+      .faq-header p {
+        font-size: 14px;
+      }
+
+      .faq-header {
+        margin-bottom: 40px;
+      }
+
+      .faq-item {
+        padding: 20px;
+        margin-bottom: 16px;
+        border-radius: 10px;
+      }
+
+      .faq-question {
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+
+      .faq-answer {
+        font-size: 14px;
+      }
+
+      .back-button {
+        font-size: 13px;
+        padding: 8px 12px;
+      }
+
+      .section-title {
+        font-size: 16px;
+        margin-top: 32px;
+      }
+
+      .footer-links {
+        gap: 8px;
+      }
+
+      .footer-links a {
+        font-size: 12px;
+      }
+
+      .footer-separator {
+        font-size: 12px;
+      }
+
+      .footer-powered {
+        font-size: 11px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 16px 12px;
+      }
+
+      .faq-header h1 {
+        font-size: 22px;
+      }
+
+      .faq-header p {
+        font-size: 13px;
+      }
+
+      .faq-header {
+        margin-bottom: 24px;
+      }
+
+      .faq-item {
+        padding: 16px;
+        margin-bottom: 12px;
+      }
+
+      .faq-question {
+        font-size: 14px;
+      }
+
+      .faq-answer {
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      .back-button {
+        font-size: 12px;
+        padding: 6px 10px;
+      }
+
+      .section-title {
+        font-size: 14px;
+        margin-top: 24px;
+      }
+
+      .footer-links {
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .footer-separator {
+        display: none;
+      }
+
+      .footer-links a {
+        font-size: 11px;
+      }
+    }
   </style>
 </head>
 <body>
