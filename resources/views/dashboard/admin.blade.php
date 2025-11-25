@@ -1971,13 +1971,21 @@
   </header>
 
   <div class="container">
-      <!-- Today's Collectible - Centered -->
-      <div style="text-align: center; padding-bottom: 32px;">
-        <p style="color: #9CA3AF; font-size: 14px; font-weight: 500; margin-bottom: 8px;">Today's Collectible</p>
-        <p style="margin-top: 8px; font-size: 48px; font-weight: 700; color: #1F2937;">₱<span id="todayCollectible">0</span> <span style="font-size: 24px; font-weight: 600; color: #4B5563;">PHP</span></p>
+      <!-- Today's Collectible - Left aligned with Chart on Right -->
+      <div style="display: flex; flex-direction: row; gap: 24px; align-items: flex-start; padding-bottom: 32px; margin-bottom: 16px;">
+        <!-- Left Side: Label and Amount -->
+        <div style="flex: 1; display: flex; flex-direction: column; justify-content: flex-start;">
+          <p style="color: #9CA3AF; font-size: 14px; font-weight: 500; margin-bottom: 8px;">Today's Collectible</p>
+          <p style="margin-top: 0px; font-size: 48px; font-weight: 700; color: #1F2937; line-height: 1;">₱<span id="todayCollectible">0</span> <span style="font-size: 24px; font-weight: 600; color: #4B5563;">PHP</span></p>
 
-        <!-- Mini Chart -->
-        <div style="margin-top: 24px; display: flex; justify-content: center;">
+          <!-- Total Collected Badge -->
+          <div style="margin-top: 24px; display: inline-block; padding: 12px 24px; background: #F0FDF4; border-radius: 9999px; width: fit-content;">
+            <p style="font-size: 14px; font-weight: 600; color: #166534;">Total Collected <span style="font-size: 20px;">₱<span id="totalCollected">0</span></span></p>
+          </div>
+        </div>
+
+        <!-- Right Side: Chart -->
+        <div style="flex: 1; display: flex; justify-content: flex-end; align-items: center;">
           <svg id="businessChart" viewBox="0 0 200 80" style="width: 120px; height: 56px;">
             <rect width="200" height="80" fill="transparent"/>
             <polyline points="10,60 50,45 90,20 130,35 170,10" fill="none" stroke="#1F8F50" stroke-width="2" vector-effect="non-scaling-stroke"/>
@@ -1988,11 +1996,6 @@
             <circle cx="130" cy="35" r="2" fill="#1F8F50"/>
             <circle cx="170" cy="10" r="2" fill="#1F8F50"/>
           </svg>
-        </div>
-
-        <!-- Total Collected Badge -->
-        <div style="margin-top: 24px; display: inline-block; padding: 12px 24px; background: #F0FDF4; border-radius: 9999px;">
-          <p style="font-size: 14px; font-weight: 600; color: #166534;">Total Collected <span style="font-size: 20px;">₱<span id="totalCollected">0</span></span></p>
         </div>
       </div>
 
