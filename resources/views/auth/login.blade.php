@@ -5,34 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Credova - Secure Login</title>
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#134376',
-                        'primary-dark': '#0F2D5F',
-                    }
-                }
-            }
-        }
-    </script>
-
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
             background: url('{{ asset("background.png") }}') center/cover no-repeat fixed;
             min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        input:focus-visible { outline: none; }
 
         .login-container {
             display: flex;
             align-items: center;
             justify-content: center;
+            width: 100%;
             min-height: 100vh;
-            padding: 40px;
+            padding: 40px 20px;
         }
 
         .login-content {
@@ -40,28 +35,76 @@
             flex-direction: column;
             gap: 30px;
             max-width: 400px;
+            width: 100%;
+        }
+
+        .logo-section {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .logo-section img {
+            width: 160px;
+            height: 160px;
+            object-fit: contain;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 16px;
         }
 
         .form-input {
             background: #f3f4f6;
             border: 2px solid rgba(19, 67, 118, 0.3);
             border-radius: 12px;
-            padding: 8px 18px;
+            padding: 12px 16px;
             font-size: 14px;
+            font-family: inherit;
             transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
+            width: 100%;
         }
 
         .form-input:focus {
-            border-color: #134376;
-            box-shadow: 0 0 0 4px rgba(19, 67, 118, 0.1);
             outline: none;
+            border-color: #134376;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(19, 67, 118, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: #9ca3af;
+        }
+
+        .remember-section {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 16px 0;
+        }
+
+        .remember-section input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #134376;
+        }
+
+        .remember-section label {
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+            user-select: none;
         }
 
         .signin-button {
             background: linear-gradient(135deg, #134376 0%, #0F2D5F 100%);
             color: white;
-            padding: 10px 32px;
+            padding: 12px 32px;
             border-radius: 12px;
             font-weight: 600;
             font-size: 14px;
@@ -69,6 +112,8 @@
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(19, 67, 118, 0.3);
+            width: 100%;
+            margin-top: 16px;
         }
 
         .signin-button:hover {
@@ -76,17 +121,19 @@
             box-shadow: 0 6px 20px rgba(19, 67, 118, 0.4);
         }
 
-        .logo-section {
-            display: flex;
-            justify-content: center;
-            width: 100%;
+        .signin-button:active {
+            transform: translateY(0);
         }
 
         .signup-section {
             display: flex;
-            gap: 10px;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
             padding-top: 20px;
             border-top: 2px solid rgba(255, 255, 255, 0.2);
+            margin-top: 20px;
         }
 
         .signup-text {
@@ -99,14 +146,24 @@
             font-weight: 600;
             text-decoration: none;
             background: rgba(255, 255, 255, 0.95);
-            padding: 8px 16px;
+            padding: 6px 14px;
             border-radius: 8px;
             transition: all 0.3s ease;
+            display: inline-block;
         }
 
         .signup-link:hover {
             background: white;
             box-shadow: 0 4px 12px rgba(19, 67, 118, 0.2);
+        }
+
+        .error-message {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 13px;
         }
 
         /* Mobile Responsive */
@@ -120,49 +177,52 @@
                 max-width: 90vw;
             }
 
+            .logo-section img {
+                width: 140px;
+                height: 140px;
+            }
+
             .form-input {
-                padding: 12px 16px;
+                padding: 12px 14px;
                 font-size: 16px;
             }
 
             .signin-button {
                 padding: 12px 24px;
-                font-size: 13px;
+                font-size: 14px;
             }
         }
 
         @media (max-width: 480px) {
             .login-container {
                 padding: 16px;
-                min-height: auto;
             }
 
             .login-content {
                 gap: 16px;
                 max-width: 100%;
-                width: 100%;
             }
 
             .logo-section img {
-                width: 120px !important;
-                height: 120px !important;
+                width: 120px;
+                height: 120px;
             }
 
             .form-input {
-                padding: 12px 14px;
+                padding: 11px 12px;
                 font-size: 16px;
                 border-radius: 10px;
             }
 
             .signin-button {
-                padding: 12px 20px;
+                padding: 11px 20px;
                 font-size: 13px;
                 border-radius: 10px;
             }
 
             .signup-section {
-                gap: 8px;
                 flex-direction: column;
+                gap: 8px;
                 align-items: center;
             }
 
@@ -176,6 +236,7 @@
                 border-radius: 6px;
             }
         }
+    </style>
 </head>
 
 <body>
@@ -183,36 +244,49 @@
         <div class="login-content">
             <!-- Logo -->
             <div class="logo-section">
-                <img src="{{ asset('credovalogo.png') }}"
-                     alt="Credova"
-                     style="width: 160px; height: 160px; object-fit: contain;">
+                <img src="{{ asset('credovalogo.png') }}" alt="Credova Logo">
             </div>
 
+            <!-- Error Messages -->
+            @if ($errors->any())
+                <div class="error-message">
+                    @foreach ($errors->all() as $error)
+                        <div>{{ $error }}</div>
+                    @endforeach
+                </div>
+            @endif
+
             <!-- Form -->
-            <form method="POST" action="{{ route('login') }}" class="flex flex-col gap-4">
+            <form method="POST" action="{{ route('login') }}">
                 @csrf
 
                 <!-- Email Input -->
-                <input type="email"
-                       name="email"
-                       required
-                       class="form-input"
-                       placeholder="Email Address">
+                <div class="form-group">
+                    <input type="email"
+                           name="email"
+                           required
+                           autofocus
+                           class="form-input"
+                           placeholder="Email Address"
+                           value="{{ old('email') }}">
+                </div>
 
                 <!-- Password Input -->
-                <input type="password"
-                       name="password"
-                       required
-                       class="form-input"
-                       placeholder="Password">
+                <div class="form-group">
+                    <input type="password"
+                           name="password"
+                           required
+                           class="form-input"
+                           placeholder="Password">
+                </div>
 
                 <!-- Remember Checkbox -->
-                <div class="flex items-center gap-2">
+                <div class="remember-section">
                     <input id="remember"
                            type="checkbox"
-                           class="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary cursor-pointer"
-                           style="accent-color: #134376;">
-                    <label for="remember" class="text-white text-sm cursor-pointer">Remember this device</label>
+                           name="remember"
+                           class="remember-checkbox">
+                    <label for="remember">Remember this device</label>
                 </div>
 
                 <!-- Sign In Button -->

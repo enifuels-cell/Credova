@@ -5,34 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Credova - Create Account</title>
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#134376',
-                        'primary-dark': '#0F2D5F',
-                    }
-                }
-            }
-        }
-    </script>
-
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
             background: url('{{ asset("background.png") }}') center/cover no-repeat fixed;
             min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        input:focus-visible { outline: none; }
 
         .register-container {
             display: flex;
             align-items: center;
             justify-content: center;
+            width: 100%;
             min-height: 100vh;
-            padding: 40px;
+            padding: 40px 20px;
         }
 
         .register-content {
@@ -40,48 +35,20 @@
             flex-direction: column;
             gap: 30px;
             max-width: 400px;
-        }
-
-        .form-input {
-            background: #f3f4f6;
-            border: 2px solid rgba(19, 67, 118, 0.3);
-            border-radius: 12px;
-            padding: 8px 18px;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
             width: 100%;
-        }
-
-        .form-input:focus {
-            border-color: #134376;
-            box-shadow: 0 0 0 4px rgba(19, 67, 118, 0.1);
-            outline: none;
-        }
-
-        .signup-button {
-            background: linear-gradient(135deg, #134376 0%, #0F2D5F 100%);
-            color: white;
-            padding: 10px 32px;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 14px;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(19, 67, 118, 0.3);
-            width: 100%;
-        }
-
-        .signup-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(19, 67, 118, 0.4);
         }
 
         .logo-section {
             display: flex;
             justify-content: center;
             width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .logo-section img {
+            width: 160px;
+            height: 160px;
+            object-fit: contain;
         }
 
         .form-header {
@@ -95,7 +62,7 @@
         .form-header h1 {
             font-size: 28px;
             font-weight: 700;
-            color: white;
+            letter-spacing: -0.5px;
         }
 
         .form-header p {
@@ -103,12 +70,76 @@
             color: rgba(255, 255, 255, 0.8);
         }
 
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+            letter-spacing: 0.3px;
+        }
+
+        .form-input {
+            background: #f3f4f6;
+            border: 2px solid rgba(19, 67, 118, 0.3);
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #134376;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(19, 67, 118, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: #9ca3af;
+        }
+
+        .signup-button {
+            background: linear-gradient(135deg, #134376 0%, #0F2D5F 100%);
+            color: white;
+            padding: 12px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(19, 67, 118, 0.3);
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        .signup-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(19, 67, 118, 0.4);
+        }
+
+        .signup-button:active {
+            transform: translateY(0);
+        }
+
         .signin-section {
             display: flex;
-            gap: 10px;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
             padding-top: 20px;
             border-top: 2px solid rgba(255, 255, 255, 0.2);
-            justify-content: center;
+            margin-top: 20px;
         }
 
         .signin-text {
@@ -121,9 +152,10 @@
             font-weight: 600;
             text-decoration: none;
             background: rgba(255, 255, 255, 0.95);
-            padding: 8px 16px;
+            padding: 6px 14px;
             border-radius: 8px;
             transition: all 0.3s ease;
+            display: inline-block;
         }
 
         .signin-link:hover {
@@ -132,15 +164,16 @@
         }
 
         .error-message {
-            color: #ef4444;
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 16px;
             font-size: 13px;
-            margin-top: -12px;
         }
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
+        .error-message li {
+            margin-left: 20px;
         }
 
         /* Mobile Responsive */
@@ -154,65 +187,60 @@
                 max-width: 90vw;
             }
 
+            .logo-section img {
+                width: 140px;
+                height: 140px;
+            }
+
+            .form-header h1 {
+                font-size: 24px;
+            }
+
             .form-input {
-                padding: 12px 16px;
+                padding: 12px 14px;
                 font-size: 16px;
             }
 
             .signup-button {
                 padding: 12px 24px;
-                font-size: 13px;
-            }
-
-            .form-header h1 {
-                font-size: 22px;
-            }
-
-            .form-header p {
-                font-size: 13px;
+                font-size: 14px;
             }
         }
 
         @media (max-width: 480px) {
             .register-container {
                 padding: 16px;
-                min-height: auto;
             }
 
             .register-content {
                 gap: 16px;
                 max-width: 100%;
-                width: 100%;
             }
 
             .logo-section img {
-                width: 120px !important;
-                height: 120px !important;
+                width: 120px;
+                height: 120px;
             }
 
             .form-header h1 {
                 font-size: 20px;
             }
 
-            .form-header p {
-                font-size: 12px;
-            }
-
             .form-input {
-                padding: 12px 14px;
+                padding: 11px 12px;
                 font-size: 16px;
                 border-radius: 10px;
             }
 
             .signup-button {
-                padding: 12px 20px;
+                padding: 11px 20px;
                 font-size: 13px;
                 border-radius: 10px;
             }
 
             .signin-section {
-                gap: 8px;
                 flex-direction: column;
+                gap: 8px;
                 align-items: center;
             }
 
@@ -234,9 +262,7 @@
         <div class="register-content">
             <!-- Logo -->
             <div class="logo-section">
-                <img src="{{ asset('credovalogo.png') }}"
-                     alt="Credova"
-                     style="width: 160px; height: 160px; object-fit: contain;">
+                <img src="{{ asset('credovalogo.png') }}" alt="Credova Logo">
             </div>
 
             <!-- Header -->
@@ -245,55 +271,66 @@
                 <p>Join Credova to manage your lending</p>
             </div>
 
+            <!-- Error Messages -->
+            @if ($errors->any())
+                <div class="error-message">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <!-- Form -->
-            <form method="POST" action="{{ route('register') }}" class="flex flex-col gap-4">
+            <form method="POST" action="{{ route('register') }}">
                 @csrf
 
                 <!-- Name Input -->
                 <div class="form-group">
+                    <label for="name">Full Name *</label>
                     <input type="text"
+                           id="name"
                            name="name"
                            required
+                           autofocus
                            class="form-input"
                            placeholder="Full Name"
                            value="{{ old('name') }}">
-                    @error('name')
-                        <span class="error-message">{{ $message }}</span>
-                    @enderror
                 </div>
 
                 <!-- Email Input -->
                 <div class="form-group">
+                    <label for="email">Email Address *</label>
                     <input type="email"
+                           id="email"
                            name="email"
                            required
                            class="form-input"
-                           placeholder="Email Address"
+                           placeholder="email@example.com"
                            value="{{ old('email') }}">
-                    @error('email')
-                        <span class="error-message">{{ $message }}</span>
-                    @enderror
                 </div>
 
                 <!-- Password Input -->
                 <div class="form-group">
+                    <label for="password">Password (min 8 characters) *</label>
                     <input type="password"
+                           id="password"
                            name="password"
                            required
                            class="form-input"
-                           placeholder="Password (min 8 characters)">
-                    @error('password')
-                        <span class="error-message">{{ $message }}</span>
-                    @enderror
+                           placeholder="Enter a strong password">
                 </div>
 
                 <!-- Confirm Password Input -->
                 <div class="form-group">
+                    <label for="password_confirmation">Confirm Password *</label>
                     <input type="password"
+                           id="password_confirmation"
                            name="password_confirmation"
                            required
                            class="form-input"
-                           placeholder="Confirm Password">
+                           placeholder="Confirm your password">
                 </div>
 
                 <!-- Sign Up Button -->
