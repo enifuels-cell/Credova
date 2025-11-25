@@ -1,0 +1,176 @@
+@import url('https://fonts.googleapis.com/css2?family=Satoshi:wght@300;400;500;600;700;800;900&display=swap');
+
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Satoshi', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+}
+
+@layer components {
+  /* Typography */
+  .maya-heading-1 {
+    @apply text-3xl sm:text-4xl font-bold tracking-tight text-gray-900;
+  }
+
+  .maya-heading-2 {
+    @apply text-2xl sm:text-3xl font-bold tracking-tight text-gray-900;
+  }
+
+  .maya-heading-3 {
+    @apply text-xl sm:text-2xl font-semibold tracking-tight text-gray-900;
+  }
+
+  .maya-subheading {
+    @apply text-lg font-semibold text-gray-900;
+  }
+
+  .maya-body-lg {
+    @apply text-base leading-relaxed text-gray-700;
+  }
+
+  .maya-body {
+    @apply text-sm leading-relaxed text-gray-600;
+  }
+
+  .maya-body-sm {
+    @apply text-xs leading-relaxed text-gray-500;
+  }
+
+  .maya-label {
+    @apply text-xs font-semibold uppercase tracking-wider text-gray-600;
+  }
+
+  .maya-placeholder {
+    @apply text-sm text-gray-400 font-normal;
+  }
+
+  /* Form Elements */
+  .maya-input {
+    @apply w-full px-4 py-3 rounded-2xl border border-gray-200 bg-white text-gray-900 placeholder-gray-400 transition-all duration-200 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100;
+  }
+
+  .maya-input-error {
+    @apply w-full px-4 py-3 rounded-2xl border border-red-300 bg-white text-gray-900 placeholder-gray-400 transition-all duration-200 focus:outline-none focus:border-red-400 focus:ring-2 focus:ring-red-100;
+  }
+
+  .gcash-input {
+    @apply w-full px-4 py-3 rounded-xl border border-gray-200 bg-white text-gray-900 placeholder-gray-400 transition-all duration-200 focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-100;
+  }
+
+  /* Buttons */
+  .maya-button {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-full font-semibold text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400;
+  }
+
+  .maya-button-secondary {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-full font-semibold text-gray-900 bg-gray-100 hover:bg-gray-200 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300;
+  }
+
+  .gcash-button {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-full font-semibold text-white bg-green-500 hover:bg-green-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-400;
+  }
+
+  .gcash-button-secondary {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-full font-semibold text-green-600 bg-green-50 hover:bg-green-100 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-300;
+  }
+
+  .maya-button-sm {
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-lg font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-200;
+  }
+
+  /* Cards */
+  .maya-card {
+    @apply bg-white rounded-2xl border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow duration-200;
+  }
+
+  .maya-card-elevated {
+    @apply bg-white rounded-2xl border border-gray-100 p-6 shadow-lg;
+  }
+
+  .gcash-card {
+    @apply bg-white rounded-xl border border-gray-200 p-5 shadow-sm hover:shadow-md transition-shadow duration-200;
+  }
+
+  .maya-stat-card {
+    @apply bg-linear-to-br from-gray-50 to-gray-100 rounded-2xl border border-gray-200 p-6;
+  }
+
+  /* Icons */
+  .maya-icon {
+    @apply w-6 h-6;
+  }
+
+  .maya-icon-lg {
+    @apply w-8 h-8;
+  }
+
+  .maya-icon-sm {
+    @apply w-4 h-4;
+  }
+
+  /* Navigation */
+  .maya-nav-item {
+    @apply flex items-center gap-3 px-4 py-3 rounded-xl text-gray-700 hover:bg-gray-100 transition-colors duration-200 font-medium;
+  }
+
+  .maya-nav-item-active {
+    @apply flex items-center gap-3 px-4 py-3 rounded-xl text-blue-600 bg-blue-50 font-semibold;
+  }
+
+  .gcash-nav-item {
+    @apply flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-green-50 transition-colors duration-200 font-medium;
+  }
+
+  .gcash-nav-item-active {
+    @apply flex items-center gap-3 px-4 py-3 rounded-lg text-green-600 bg-green-50 font-semibold;
+  }
+
+  /* Badges */
+  .maya-badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-800;
+  }
+
+  .maya-badge-success {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800;
+  }
+
+  .maya-badge-error {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-800;
+  }
+
+  .gcash-badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-800;
+  }
+
+  /* Dividers */
+  .maya-divider {
+    @apply h-px bg-gray-200;
+  }
+
+  /* Spacing Utilities */
+  .maya-spacing-xs {
+    @apply gap-2;
+  }
+
+  .maya-spacing-sm {
+    @apply gap-3;
+  }
+
+  .maya-spacing-md {
+    @apply gap-4;
+  }
+
+  .maya-spacing-lg {
+    @apply gap-6;
+  }
+
+  .maya-spacing-xl {
+    @apply gap-8;
+  }
+}
