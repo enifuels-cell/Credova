@@ -38,7 +38,7 @@ class LoanController extends Controller
     // Show a single loan with ledger
     public function show(Loan $loan)
     {
-        $loan->load(['borrower','payments','collectionAttempts.collector']);
+        $loan->load(['borrower','payments','collectionAttempts']);
 
         $ledger = [];
         $balance = $loan->total_due;

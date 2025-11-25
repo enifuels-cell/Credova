@@ -11,7 +11,6 @@ class CreateCollectionAttemptsTable extends Migration
             $table->id();
             $table->foreignId('loan_id')->constrained('loans')->cascadeOnDelete();
             $table->foreignId('borrower_id')->constrained('borrowers')->cascadeOnDelete();
-            $table->foreignId('collector_id')->nullable()->constrained('collectors')->nullOnDelete();
             $table->dateTime('attempted_at');
             $table->string('outcome')->default('attempted'); // attempted, promised, paid, failed, escalated
             $table->decimal('collected_amount', 15, 2)->nullable();
