@@ -11,7 +11,8 @@
     html {
       width: 100%;
       height: 100%;
-      overflow: hidden;
+      overflow-y: auto;
+      overflow-x: hidden;
     }
 
     @keyframes slideInLeft {
@@ -34,9 +35,10 @@
       width: 100%;
       -webkit-user-select: none;
       -webkit-touch-callout: none;
+      -webkit-overflow-scrolling: touch;
     }
 
-    .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; flex: 1; overflow-y: auto; overflow-x: hidden; width: 100%; touch-action: pan-y; -webkit-overflow-scrolling: touch; }
+    .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; flex: 1; overflow: visible; width: 100%; touch-action: pan-y; }
 
     /* Mobile-first base (apply always under 640px) */
     @media (max-width: 640px) {
