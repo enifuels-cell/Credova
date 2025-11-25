@@ -153,7 +153,8 @@
 
             <!-- Register Section -->
             <div class="signup-section">
-                <span class="text-white text-sm">Register</span>
+                <span class="signup-text">Don't have an account?</span>
+                <a href="{{ route('register') }}" class="signup-link">REGISTER</a>
             </div>
         </div>
     </div>
