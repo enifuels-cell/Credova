@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>Credova - Lending Management</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
@@ -2814,6 +2815,7 @@
         borrowerAddress: document.getElementById('borrowerAddress').value,
         loanAmount: document.getElementById('loanAmount').value,
         loanDays: document.getElementById('loanDays').value,
+        interestRate: document.getElementById('interestRate').value,
         paymentFrequency: document.getElementById('paymentFrequency').value,
         paymentDay1: document.getElementById('paymentDay1').value || null,
         paymentDay2: document.getElementById('paymentDay2').value || null,
@@ -2831,34 +2833,59 @@
         }
       }
 
-      // Log the data (in production, this would be sent to the server)
-      console.log('New Account Created:', formData);
-      alert(`Account created for ${formData.borrowerName}\nLoan: ₱${formData.loanAmount}\nDuration: ${formData.loanDays} days\nPayment: ${formData.paymentFrequency}`);
+      // Send to Laravel backend
+      fetch('/api/borrowers', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
+        },
+        body: JSON.stringify({
+          fullName: formData.borrowerName,
+          email: formData.borrowerEmail,
+          phone: formData.borrowerPhone,
+          address: formData.borrowerAddress
+        })
+      })
+      .then(response => response.json())
+      .then(borrower => {
+        // Now create the loan for this borrower
+        const principal = parseInt(formData.loanAmount);
+        const term = parseInt(formData.loanDays);
+        const interest_rate = parseFloat(formData.interestRate);
+        const interest_amount = (principal * interest_rate) / 100;
+        const total_payable = principal + interest_amount;
 
-      // Add new borrower to the data array
-      const newBorrower = {
-        id: borrowersData.length + 1,
-        name: formData.borrowerName,
-        email: formData.borrowerEmail,
-        phone: formData.borrowerPhone,
-        address: formData.borrowerAddress,
-        amount: parseInt(formData.loanAmount),
-        paidAmount: 0,
-        days: parseInt(formData.loanDays),
-        dueDate: new Date(Date.now() + parseInt(formData.loanDays) * 24 * 60 * 60 * 1000),
-        status: 'on-time'
-      };
-      borrowersData.push(newBorrower);
+        return fetch('/api/loans', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
+          },
+          body: JSON.stringify({
+            borrower_id: borrower.id,
+            principal: principal,
+            term: term,
+            interest_rate: interest_rate,
+            total_payable: total_payable,
+            payment_frequency: formData.paymentFrequency
+          })
+        });
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert(`Account created for ${formData.borrowerName}\nLoan: ₱${formData.loanAmount}\nDuration: ${formData.loanDays} days\nPayment: ${formData.paymentFrequency}`);
 
-      // Clear form and close modal
-      closeModal();
+        // Clear form and close modal
+        closeModal();
 
-      // Update dashboard and performance list
-      updateDashboardMetrics();
-      renderBorrowersPerformance();
-
-      // In production, you would send this to your Laravel backend
-      // Example: fetch('/api/borrowers', { method: 'POST', body: JSON.stringify(formData) })
+        // Reload the borrowers data from the server
+        fetchBorrowersData();
+      })
+      .catch(error => {
+        console.error('Error creating account:', error);
+        alert('Error creating account. Please try again.');
+      });
     }
 
     // Function to render borrowers performance with credit scores

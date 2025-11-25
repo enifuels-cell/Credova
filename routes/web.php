@@ -60,6 +60,32 @@ Route::middleware('auth')->group(function () {
     Route::get('reports/ledger/{borrower}', [ReportController::class,'ledgerByBorrower'])->name('reports.ledger');
 
     // API routes for AJAX calls
+    Route::post('/api/borrowers', function(\Illuminate\Http\Request $request) {
+        $user = Auth::user();
+        $borrower = $user->borrowers()->create([
+            'first_name' => $request->input('fullName'),
+            'email' => $request->input('email'),
+            'phone' => $request->input('phone'),
+            'address' => $request->input('address'),
+        ]);
+
+        return response()->json($borrower);
+    });
+
+    Route::post('/api/loans', function(\Illuminate\Http\Request $request) {
+        $loan = \App\Models\Loan::create([
+            'borrower_id' => $request->input('borrower_id'),
+            'principal' => $request->input('principal'),
+            'term' => $request->input('term'),
+            'interest_rate' => $request->input('interest_rate'),
+            'total_payable' => $request->input('total_payable'),
+            'status' => 'active',
+            'first_due_date' => now()->addDays($request->input('term')),
+        ]);
+
+        return response()->json($loan);
+    });
+
     Route::get('/api/borrowers', function() {
         $user = Auth::user();
         $borrowers = $user->borrowers()->with(['loans' => function($q) {
