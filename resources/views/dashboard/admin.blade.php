@@ -6,6 +6,21 @@
   <title>Credova - Lending Management</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --brand: #0D3B66;
+      --brand-light: #EBF3FA;
+      --brand-dark: #082640;
+
+      --text-main: #1A1A1A;
+      --text-muted: #6B7280;
+
+      --bg-main: #F6F8FA;
+      --card-bg: #FFFFFF;
+
+      --radius: 12px;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    }
+
     * { margin:0; padding:0; box-sizing:border-box; }
 
     html {
@@ -21,9 +36,9 @@
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Inter', sans-serif;
-      background: #FFFFFF;
-      color: #1A1F2C;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+      background: var(--bg-main);
+      color: var(--text-main);
       line-height: 1.3;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
@@ -43,18 +58,67 @@
     /* Mobile-first base (apply always under 640px) */
     @media (max-width: 640px) {
       body {
-        background: #FAFBFC;
+        background: var(--bg-main);
       }
 
       .container {
-        padding: 48px 20px 0 20px;
+        padding: 24px 20px 0 20px;
         margin: 0;
       }
 
-      .big-amount {
-        font-size: 32px;
-        font-weight: 800;
-        color: #0F172A;
+      /* Dashboard Module Card */
+      .dashboard-module {
+        background: var(--card-bg);
+        box-shadow: var(--shadow);
+        border-radius: var(--radius);
+        padding: 20px;
+        margin-bottom: 24px;
+      }
+
+      /* KPI Boxes */
+      .kpi-box {
+        background: #FFFFFF;
+        border-radius: 14px;
+        box-shadow: var(--shadow);
+        padding: 16px;
+        text-align: center;
+        flex: 1;
+      }
+
+      .kpi-label {
+        color: var(--text-muted);
+        font-size: 13px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .kpi-value {
+        font-size: 22px;
+        font-weight: 700;
+        margin-top: 6px;
+        color: var(--text-main);
+      }
+
+      /* Main Buttons */
+      .btn-main {
+        background: var(--brand);
+        color: #fff;
+        padding: 12px 20px;
+        border-radius: var(--radius);
+        border: none;
+        font-weight: 600;
+        box-shadow: 0 4px 14px rgba(13, 59, 102, 0.15);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 14px;
+        flex: 1;
+      }
+
+      .btn-main:hover {
+        background: var(--brand-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(13, 59, 102, 0.25);
       }
 
       .action-buttons {
@@ -62,26 +126,26 @@
         flex-direction: row;
         gap: 16px;
         margin-top: 32px;
+        margin-bottom: 32px;
       }
 
-      .action-buttons button {
-        flex: 1;
-        padding: 16px 20px;
-        background: #1E293B;
-        color: white;
+      /* Section Header */
+      .section-header {
+        background: var(--brand);
+        color: #fff;
+        padding: 14px 18px;
+        border-radius: var(--radius) var(--radius) 0 0;
         font-weight: 600;
-        border-radius: 16px;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.08);
-        border: none;
-        cursor: pointer;
-        font-size: 14px;
-        transition: all 0.3s ease;
+        font-size: 15px;
       }
 
-      .action-buttons button:hover {
-        background: #0F172A;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(0,0,0,0.12);
+      /* Card Container */
+      .card {
+        background: var(--card-bg);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        padding: 16px 20px;
+        margin-bottom: 20px;
       }
 
       .metric-row {
@@ -94,13 +158,14 @@
         overflow-y: hidden;
         scroll-behavior: smooth;
         -webkit-overflow-scrolling: touch;
+        margin-bottom: 32px;
       }
 
       .metric-card {
         background: #FFFFFF;
         border-radius: 16px;
         padding: 16px 20px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+        box-shadow: var(--shadow);
         flex: 1;
         min-width: 100px;
         text-align: center;
@@ -108,30 +173,29 @@
 
       .financial-card {
         margin: 0;
-        margin-top: 48px;
+        margin-top: 32px;
         margin-left: 20px;
         margin-right: 20px;
         background: #FFFFFF;
-        border-radius: 24px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
         overflow: hidden;
+        margin-bottom: 32px;
       }
 
       .financial-header {
-        background: #6366F1;
-        padding: 16px 24px;
+        background: var(--brand);
+        padding: 14px 18px;
         color: white;
         font-weight: 600;
-        display: flex;
-        align-items: center;
-        gap: 8px;
+        font-size: 15px;
       }
 
       .financial-body {
         padding: 24px;
         display: flex;
         flex-direction: column;
-        gap: 32px;
+        gap: 24px;
       }
 
       .financial-row {
@@ -142,7 +206,7 @@
 
       .financial-row-label {
         font-size: 13px;
-        color: #9CA3AF;
+        color: var(--text-muted);
         text-transform: uppercase;
         letter-spacing: 0.5px;
         font-weight: 500;
@@ -150,8 +214,8 @@
 
       .financial-row-value {
         font-size: 28px;
-        font-weight: 800;
-        color: #0F172A;
+        font-weight: 700;
+        color: var(--text-main);
       }
 
       .financial-row-value.green {
@@ -1971,82 +2035,78 @@
   </header>
 
   <div class="container">
-      <!-- Today's Collectible - Left aligned with Chart on Right -->
-      <div style="display: flex; flex-direction: row; gap: 24px; align-items: flex-start; padding-bottom: 32px; margin-bottom: 16px;">
-        <!-- Left Side: Label and Amount -->
-        <div style="flex: 1; display: flex; flex-direction: column; justify-content: flex-start;">
-          <p style="color: #9CA3AF; font-size: 14px; font-weight: 500; margin-bottom: 8px;">Today's Collectible</p>
-          <p style="margin-top: 0px; font-size: 48px; font-weight: 700; color: #1F2937; line-height: 1;">₱<span id="todayCollectible">0</span> <span style="font-size: 24px; font-weight: 600; color: #4B5563;">PHP</span></p>
+      <!-- Dashboard Module: Today's Collectible -->
+      <div class="dashboard-module">
+        <div style="display: flex; flex-direction: row; gap: 24px; align-items: flex-start;">
+          <!-- Left Side: Label and Amount -->
+          <div style="flex: 1; display: flex; flex-direction: column; justify-content: flex-start;">
+            <p style="color: var(--text-muted); font-size: 14px; font-weight: 500; margin-bottom: 8px;">Today's Collectible</p>
+            <p style="margin-top: 0px; font-size: 48px; font-weight: 700; color: var(--text-main); line-height: 1;">₱<span id="todayCollectible">0</span> <span style="font-size: 24px; font-weight: 600; color: var(--text-muted);">PHP</span></p>
 
-          <!-- Total Collected Badge -->
-          <div style="margin-top: 24px; display: inline-block; padding: 12px 24px; background: #F0FDF4; border-radius: 9999px; width: fit-content;">
-            <p style="font-size: 14px; font-weight: 600; color: #166534;">Total Collected <span style="font-size: 20px;">₱<span id="totalCollected">0</span></span></p>
+            <!-- Total Collected Badge -->
+            <div style="margin-top: 24px; display: inline-block; padding: 12px 24px; background: var(--brand-light); border-radius: 9999px; width: fit-content;">
+              <p style="font-size: 14px; font-weight: 600; color: var(--brand);">Total Collected <span style="font-size: 20px;">₱<span id="totalCollected">0</span></span></p>
+            </div>
+          </div>
+
+          <!-- Right Side: Chart -->
+          <div style="flex: 1; display: flex; justify-content: flex-end; align-items: center;">
+            <svg id="businessChart" viewBox="0 0 200 80" style="width: 120px; height: 56px;">
+              <rect width="200" height="80" fill="transparent"/>
+              <polyline points="10,60 50,45 90,20 130,35 170,10" fill="none" stroke="var(--brand)" stroke-width="2" vector-effect="non-scaling-stroke"/>
+              <polygon points="10,60 50,45 90,20 130,35 170,10 170,80 130,80 90,80 50,80 10,80" fill="rgba(13, 59, 102, 0.1)"/>
+              <circle cx="10" cy="60" r="2" fill="var(--brand)"/>
+              <circle cx="50" cy="45" r="2" fill="var(--brand)"/>
+              <circle cx="90" cy="20" r="2" fill="var(--brand)"/>
+              <circle cx="130" cy="35" r="2" fill="var(--brand)"/>
+              <circle cx="170" cy="10" r="2" fill="var(--brand)"/>
+            </svg>
           </div>
         </div>
-
-        <!-- Right Side: Chart -->
-        <div style="flex: 1; display: flex; justify-content: flex-end; align-items: center;">
-          <svg id="businessChart" viewBox="0 0 200 80" style="width: 120px; height: 56px;">
-            <rect width="200" height="80" fill="transparent"/>
-            <polyline points="10,60 50,45 90,20 130,35 170,10" fill="none" stroke="#1F8F50" stroke-width="2" vector-effect="non-scaling-stroke"/>
-            <polygon points="10,60 50,45 90,20 130,35 170,10 170,80 130,80 90,80 50,80 10,80" fill="rgba(31, 143, 80, 0.2)"/>
-            <circle cx="10" cy="60" r="2" fill="#1F8F50"/>
-            <circle cx="50" cy="45" r="2" fill="#1F8F50"/>
-            <circle cx="90" cy="20" r="2" fill="#1F8F50"/>
-            <circle cx="130" cy="35" r="2" fill="#1F8F50"/>
-            <circle cx="170" cy="10" r="2" fill="#1F8F50"/>
-          </svg>
-        </div>
       </div>
 
-      <!-- Action Buttons - Side by Side -->
-      <div style="margin-top: 40px; display: flex; flex-direction: row; gap: 16px; margin-bottom: 32px;">
-        <button onclick="openAddAccountModal()" style="flex: 1; padding: 20px 16px; background: #1E293B; color: white; font-weight: 600; border-radius: 16px; box-shadow: 0 4px 8px rgba(0,0,0,0.08); border: none; cursor: pointer; font-size: 14px; transition: all 0.3s ease;">
-          +Add Accounts
-        </button>
-        <button onclick="openViewAccountsModal()" style="flex: 1; padding: 20px 16px; background: #1E293B; color: white; font-weight: 600; border-radius: 16px; box-shadow: 0 4px 8px rgba(0,0,0,0.08); border: none; cursor: pointer; font-size: 14px; transition: all 0.3s ease;">
-          View Accounts
-        </button>
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button class="btn-main" onclick="openAddAccountModal()">+Add Accounts</button>
+        <button class="btn-main" onclick="openViewAccountsModal()">View Accounts</button>
       </div>
 
-      <!-- 3 Metric Cards in a Row -->
-      <div style="margin-top: 32px; display: flex; flex-direction: row; gap: 12px; margin-bottom: 32px;">
+      <!-- 3 Metric KPI Boxes -->
+      <div style="display: flex; flex-direction: row; gap: 12px; margin-bottom: 32px;">
         <!-- Active Loans -->
-        <div style="background: #FFFFFF; border-radius: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 20px 16px; flex: 1; min-width: 100px; text-align: center;">
-          <div style="font-size: 12px; color: #9CA3AF; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 8px;">Active Loans</div>
-          <div style="font-size: 24px; font-weight: 700; color: #1F2937;" id="activeLoansCount">0</div>
+        <div class="kpi-box">
+          <div class="kpi-label">Active Loans</div>
+          <div class="kpi-value" id="activeLoansCount">0</div>
         </div>
 
         <!-- Overdue -->
-        <div style="background: #FFFFFF; border-radius: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 20px 16px; flex: 1; min-width: 100px; text-align: center;">
-          <div style="font-size: 12px; color: #9CA3AF; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 8px;">Overdue</div>
-          <div style="font-size: 24px; font-weight: 700; color: #DC2626;" id="overdueCount">0</div>
+        <div class="kpi-box">
+          <div class="kpi-label">Overdue</div>
+          <div class="kpi-value" style="color: #DC2626;" id="overdueCount">0</div>
         </div>
 
         <!-- Avg ROI -->
-        <div style="background: #FFFFFF; border-radius: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 20px 16px; flex: 1; min-width: 100px; text-align: center;">
-          <div style="font-size: 12px; color: #9CA3AF; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 8px;">Avg ROI</div>
-          <div style="font-size: 24px; font-weight: 700; color: #16A34A;" id="avgROI">0%</div>
+        <div class="kpi-box">
+          <div class="kpi-label">Avg ROI</div>
+          <div class="kpi-value" style="color: #16A34A;" id="avgROI">0%</div>
         </div>
       </div>
 
       <!-- Financial Overview Card -->
-      <div style="margin-top: 48px; background: #FFFFFF; border-radius: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow: hidden; margin-bottom: 32px;">
-        <div style="background: #4F46E5; padding: 16px 24px;">
-          <h3 style="color: white; font-weight: 600; font-size: 14px;">FINANCIAL OVERVIEW</h3>
-        </div>
-        <div style="padding: 24px; display: flex; flex-direction: column; gap: 32px;">
-          <div>
-            <p style="color: #9CA3AF; font-size: 13px;">Capital Released</p>
-            <p style="margin-top: 4px; font-size: 24px; font-weight: 700; color: #1F2937;" id="capitalReleased">₱0</p>
+      <div class="financial-card">
+        <div class="section-header">FINANCIAL OVERVIEW</div>
+        <div class="financial-body">
+          <div class="financial-row">
+            <div class="financial-row-label">Capital Released</div>
+            <div class="financial-row-value" id="capitalReleased">₱0</div>
           </div>
-          <div>
-            <p style="color: #9CA3AF; font-size: 13px;">Interest Earned</p>
-            <p style="margin-top: 4px; font-size: 24px; font-weight: 700; color: #1F2937;" id="interestEarned">₱0</p>
+          <div class="financial-row">
+            <div class="financial-row-label">Interest Earned</div>
+            <div class="financial-row-value" id="interestEarned">₱0</div>
           </div>
-          <div>
-            <p style="color: #9CA3AF; font-size: 13px;">Return on Investment</p>
-            <p style="margin-top: 4px; font-size: 24px; font-weight: 700; color: #16A34A;" id="roiPercentage">0%</p>
+          <div class="financial-row">
+            <div class="financial-row-label">Return on Investment</div>
+            <div class="financial-row-value green" id="roiPercentage">0%</div>
           </div>
         </div>
       </div>
