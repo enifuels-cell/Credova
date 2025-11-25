@@ -1669,7 +1669,9 @@
       width: 90%;
       max-width: 600px;
       max-height: 85vh;
-      overflow: hidden;
+      overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
       animation: slideInUp 0.4s ease-out;
       display: flex;
       flex-direction: column;
@@ -1688,10 +1690,13 @@
     }
 
     .modal-header {
-      background: linear-gradient(135deg, #0D1B3E 0%, #1A2F4F 100%);
+      background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
       color: white;
       padding: 32px 32px 24px;
       border-bottom: none;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 10;
     }
 
     .modal-header h2 {
@@ -1732,8 +1737,10 @@
     .modal-body {
       padding: 32px;
       overflow-y: auto;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
       flex: 1;
-      max-height: calc(85vh - 120px);
+      max-height: calc(85vh - 150px);
     }
 
     .modal-body::-webkit-scrollbar {
@@ -1807,8 +1814,10 @@
       display: flex;
       gap: 12px;
       justify-content: flex-end;
-      position: relative;
-      z-index: 100;
+      position: sticky;
+      bottom: 0;
+      z-index: 20;
+      flex-shrink: 0;
     }
 
     .btn-cancel {
