@@ -8,6 +8,13 @@
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
 
+    html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      touch-action: none;
+    }
+
     @keyframes slideInLeft {
       from { opacity: 0; transform: translateX(-20px); }
       to { opacity: 1; transform: translateX(0); }
@@ -22,14 +29,23 @@
       -moz-osx-font-smoothing: grayscale;
       text-rendering: optimizeLegibility;
       min-height: 100vh;
+      max-height: 100vh;
       display: flex;
       flex-direction: column;
-      overflow-x: hidden;
-      width: 100vw;
-      position: relative;
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      touch-action: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
     }
 
-    .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; flex: 1; }
+    .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; flex: 1; overflow-y: auto; overflow-x: hidden; width: 100%; touch-action: pan-y; }
 
     /* Mobile-first base (apply always under 640px) */
     @media (max-width: 640px) {
@@ -2898,6 +2914,42 @@
 
     // Chart using SVG - no JS initialization needed
     updateDashboardMetrics();
+
+    // Lock viewport - prevent zoom and horizontal scrolling
+    document.addEventListener('touchmove', function(e) {
+      if (e.touches.length > 1) {
+        e.preventDefault(); // Prevent pinch zoom
+      }
+    }, { passive: false });
+
+    document.addEventListener('gesturestart', function(e) {
+      e.preventDefault(); // Prevent gesture zoom on iOS
+    }, { passive: false });
+
+    document.addEventListener('wheel', function(e) {
+      if (e.ctrlKey) {
+        e.preventDefault(); // Prevent ctrl+wheel zoom
+      }
+    }, { passive: false });
+
+    // Prevent horizontal scroll swipe
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    document.addEventListener('touchstart', function(e) {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    document.addEventListener('touchend', function(e) {
+      touchEndX = e.changedTouches[0].screenX;
+      const container = document.querySelector('.container');
+      const isScrollableElement = e.target.closest('[data-scrollable]');
+
+      // Allow swipe only on scrollable metric cards, not on the main container
+      if (!isScrollableElement && Math.abs(touchStartX - touchEndX) > 50) {
+        e.preventDefault();
+      }
+    }, { passive: false });
   </script>
 
   <footer class="dashboard-footer">
