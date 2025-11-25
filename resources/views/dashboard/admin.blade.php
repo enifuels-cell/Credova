@@ -1971,22 +1971,17 @@
   </header>
 
   <div class="container">
-      <!-- Today's Collectible -->
-      <div class="collectible">
-        <div>
-          <div class="collectible-label">Today's Collectible</div>
-          <div class="amount"><span id="todayCollectible">9,000</span><span class="currency">PHP</span></div>
-          <div class="total-collected">Total Collected <span id="totalCollected">₱2,000</span></div>
-        </div>
-        <div class="chart">
-          <svg id="businessChart" viewBox="0 0 200 80" style="width: 100%; height: 100%;">
-            <!-- Grid background -->
+      <!-- Today's Collectible - Centered -->
+      <div style="text-align: center; padding-bottom: 32px;">
+        <p style="color: #9CA3AF; font-size: 14px; font-weight: 500; margin-bottom: 8px;">Today's Collectible</p>
+        <p style="margin-top: 8px; font-size: 48px; font-weight: 700; color: #1F2937;">₱<span id="todayCollectible">0</span> <span style="font-size: 24px; font-weight: 600; color: #4B5563;">PHP</span></p>
+
+        <!-- Mini Chart -->
+        <div style="margin-top: 24px; display: flex; justify-content: center;">
+          <svg id="businessChart" viewBox="0 0 200 80" style="width: 120px; height: 56px;">
             <rect width="200" height="80" fill="transparent"/>
-            <!-- Line chart -->
             <polyline points="10,60 50,45 90,20 130,35 170,10" fill="none" stroke="#1F8F50" stroke-width="2" vector-effect="non-scaling-stroke"/>
-            <!-- Fill area -->
             <polygon points="10,60 50,45 90,20 130,35 170,10 170,80 130,80 90,80 50,80 10,80" fill="rgba(31, 143, 80, 0.2)"/>
-            <!-- Data points -->
             <circle cx="10" cy="60" r="2" fill="#1F8F50"/>
             <circle cx="50" cy="45" r="2" fill="#1F8F50"/>
             <circle cx="90" cy="20" r="2" fill="#1F8F50"/>
@@ -1994,91 +1989,62 @@
             <circle cx="170" cy="10" r="2" fill="#1F8F50"/>
           </svg>
         </div>
-      </div>
 
-      <!-- Divider Before Buttons -->
-      <div class="btn-divider"></div>
-
-      <!-- Buttons -->
-      <div class="btn-row">
-        <button class="btn" onclick="openAddAccountModal()">+Add Accounts</button>
-        <button class="btn" onclick="openViewAccountsModal()">View Accounts</button>
-      </div>
-
-      <!-- Quick Stats -->
-      <div class="stats">
-        <div class="stat" onclick="openActiveLoansModal()" style="cursor: pointer;">
-          <div class="stat-icon">
-            <svg width="32" height="32" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <!-- Document/Invoice Icon -->
-              <path d="M12 6h20v30H12z" fill="#3b82f6" opacity="0.15" stroke="#3b82f6" stroke-width="1.5"/>
-              <path d="M16 12h12M16 18h12M16 24h8" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <circle cx="36" cy="32" r="8" fill="#3b82f6" opacity="0.2" stroke="#3b82f6" stroke-width="1.5"/>
-              <text x="36" y="36" text-anchor="middle" font-size="10" font-weight="bold" fill="#3b82f6">+</text>
-            </svg>
-          </div>
-          <div class="stat-content">
-            <div class="stat-tag">Active Loans</div>
-            <div class="stat-value" id="activeLoansCount">5</div>
-          </div>
-        </div>
-        <div class="stat" onclick="openOverdueModal()" style="cursor: pointer;">
-          <div class="stat-icon">
-            <svg width="32" height="32" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <!-- Clock/Timer Icon -->
-              <circle cx="24" cy="24" r="14" fill="#ef4444" opacity="0.15" stroke="#ef4444" stroke-width="1.5"/>
-              <line x1="24" y1="14" x2="24" y2="24" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
-              <line x1="24" y1="24" x2="32" y2="24" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
-              <circle cx="24" cy="24" r="2" fill="#ef4444"/>
-              <path d="M36 10l4-4M36 38l4 4" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <div class="stat-content">
-            <div class="stat-tag">Overdue</div>
-            <div class="stat-value" id="overdueCount">3</div>
-          </div>
-        </div>
-        <div class="stat" onclick="openROIModal()" style="cursor: pointer;">
-          <div class="stat-icon">
-            <svg width="32" height="32" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <!-- Growth/Chart Icon -->
-              <rect x="8" y="28" width="6" height="12" fill="#22C55E" opacity="0.15" stroke="#22C55E" stroke-width="1.5" rx="1"/>
-              <rect x="18" y="20" width="6" height="20" fill="#22C55E" opacity="0.35" stroke="#22C55E" stroke-width="1.5" rx="1"/>
-              <rect x="28" y="12" width="6" height="28" fill="#22C55E" stroke="#22C55E" stroke-width="1.5" rx="1"/>
-              <path d="M8 40h32" stroke="#22C55E" stroke-width="2" stroke-linecap="round"/>
-              <path d="M32 16l-6 6-4-4-8 8" stroke="#22C55E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-            </svg>
-          </div>
-          <div class="stat-content">
-            <div class="stat-tag">Avg ROI</div>
-            <div class="stat-value" id="avgROI">12%</div>
-          </div>
+        <!-- Total Collected Badge -->
+        <div style="margin-top: 24px; display: inline-block; padding: 12px 24px; background: #F0FDF4; border-radius: 9999px;">
+          <p style="font-size: 14px; font-weight: 600; color: #166534;">Total Collected <span style="font-size: 20px;">₱<span id="totalCollected">0</span></span></p>
         </div>
       </div>
 
-      <!-- Financial Overview Title -->
-      <div class="section-title">Financial Overview</div>
+      <!-- Action Buttons - Side by Side -->
+      <div style="margin-top: 40px; display: flex; flex-direction: row; gap: 16px; margin-bottom: 32px;">
+        <button onclick="openAddAccountModal()" style="flex: 1; padding: 20px 16px; background: #1E293B; color: white; font-weight: 600; border-radius: 16px; box-shadow: 0 4px 8px rgba(0,0,0,0.08); border: none; cursor: pointer; font-size: 14px; transition: all 0.3s ease;">
+          +Add Accounts
+        </button>
+        <button onclick="openViewAccountsModal()" style="flex: 1; padding: 20px 16px; background: #1E293B; color: white; font-weight: 600; border-radius: 16px; box-shadow: 0 4px 8px rgba(0,0,0,0.08); border: none; cursor: pointer; font-size: 14px; transition: all 0.3s ease;">
+          View Accounts
+        </button>
+      </div>
 
-      <!-- Financial Overview Cards -->
-      <div class="financial-cards">
-        <div class="f-card">
-          <div class="f-label">Capital Released</div>
-          <div class="f-value" id="capitalReleased">₱10,000</div>
-          <div class="f-sub">Principal deployed</div>
+      <!-- 3 Metric Cards in a Row -->
+      <div style="margin-top: 32px; display: flex; flex-direction: row; gap: 12px; margin-bottom: 32px;">
+        <!-- Active Loans -->
+        <div style="background: #FFFFFF; border-radius: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 20px 16px; flex: 1; min-width: 100px; text-align: center;">
+          <div style="font-size: 12px; color: #9CA3AF; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 8px;">Active Loans</div>
+          <div style="font-size: 24px; font-weight: 700; color: #1F2937;" id="activeLoansCount">0</div>
         </div>
-        <div class="f-card">
-          <div class="f-label">Interest Earned</div>
-          <div class="f-value green" id="interestEarned">₱1,000</div>
-          <div class="f-sub">Revenue</div>
+
+        <!-- Overdue -->
+        <div style="background: #FFFFFF; border-radius: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 20px 16px; flex: 1; min-width: 100px; text-align: center;">
+          <div style="font-size: 12px; color: #9CA3AF; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 8px;">Overdue</div>
+          <div style="font-size: 24px; font-weight: 700; color: #DC2626;" id="overdueCount">0</div>
         </div>
-        <div class="f-card">
-          <div class="f-label">Return on Investment</div>
-          <div class="f-value blue" id="roiPercentage">10%</div>
-          <div class="f-sub">Performance</div>
+
+        <!-- Avg ROI -->
+        <div style="background: #FFFFFF; border-radius: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); padding: 20px 16px; flex: 1; min-width: 100px; text-align: center;">
+          <div style="font-size: 12px; color: #9CA3AF; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 8px;">Avg ROI</div>
+          <div style="font-size: 24px; font-weight: 700; color: #16A34A;" id="avgROI">0%</div>
         </div>
-        <div class="f-card">
-          <div class="f-label">Status</div>
-          <div class="f-value green" id="portfolioStatus">Profitable</div>
+      </div>
+
+      <!-- Financial Overview Card -->
+      <div style="margin-top: 48px; background: #FFFFFF; border-radius: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow: hidden; margin-bottom: 32px;">
+        <div style="background: #4F46E5; padding: 16px 24px;">
+          <h3 style="color: white; font-weight: 600; font-size: 14px;">FINANCIAL OVERVIEW</h3>
+        </div>
+        <div style="padding: 24px; display: flex; flex-direction: column; gap: 32px;">
+          <div>
+            <p style="color: #9CA3AF; font-size: 13px;">Capital Released</p>
+            <p style="margin-top: 4px; font-size: 24px; font-weight: 700; color: #1F2937;" id="capitalReleased">₱0</p>
+          </div>
+          <div>
+            <p style="color: #9CA3AF; font-size: 13px;">Interest Earned</p>
+            <p style="margin-top: 4px; font-size: 24px; font-weight: 700; color: #1F2937;" id="interestEarned">₱0</p>
+          </div>
+          <div>
+            <p style="color: #9CA3AF; font-size: 13px;">Return on Investment</p>
+            <p style="margin-top: 4px; font-size: 24px; font-weight: 700; color: #16A34A;" id="roiPercentage">0%</p>
+          </div>
         </div>
       </div>
     </div>
