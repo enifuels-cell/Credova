@@ -28,9 +28,9 @@
 
     /* Mobile Responsive */
     @media (max-width: 768px) {
-      .container { 
-        margin: 16px auto; 
-        padding: 0 12px; 
+      .container {
+        margin: 16px auto;
+        padding: 0 12px;
         flex: 1;
       }
 
@@ -403,9 +403,9 @@
     }
 
     @media (max-width: 480px) {
-      .container { 
-        margin: 12px auto; 
-        padding: 0 10px; 
+      .container {
+        margin: 12px auto;
+        padding: 0 10px;
         flex: 1;
       }
 
