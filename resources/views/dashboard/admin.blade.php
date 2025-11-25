@@ -1802,17 +1802,19 @@
 
     .modal-footer {
       padding: 24px 32px;
-      background: #F5F7FA;
+      background: var(--bg-main);
       border-top: 1px solid #D9DEE8;
       display: flex;
       gap: 12px;
       justify-content: flex-end;
+      position: relative;
+      z-index: 100;
     }
 
     .btn-cancel {
       background: #FFFFFF;
-      color: #0D1B3E;
-      border: 1px solid #D9DEE8;
+      color: var(--brand);
+      border: 2px solid var(--brand);
       padding: 12px 28px;
       border-radius: 9999px;
       font-size: 15px;
@@ -1824,12 +1826,12 @@
     }
 
     .btn-cancel:hover {
-      background: #F1F3F8;
-      border-color: #1A73E8;
+      background: var(--brand-light);
+      border-color: var(--brand-dark);
     }
 
     .btn-submit {
-      background: linear-gradient(135deg, #0D1B3E 0%, #112352 100%);
+      background: var(--brand);
       color: white;
       border: none;
       padding: 12px 32px;
@@ -1840,13 +1842,13 @@
       line-height: 1.1;
       cursor: pointer;
       transition: all 0.3s ease;
-      box-shadow: 0 4px 10px rgba(13, 27, 62, 0.25);
+      box-shadow: 0 4px 14px rgba(13, 59, 102, 0.25);
     }
 
     .btn-submit:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(13, 27, 62, 0.35);
-      background: linear-gradient(135deg, #112352 0%, #0A162F 100%);
+      box-shadow: 0 6px 20px rgba(13, 59, 102, 0.35);
+      background: var(--brand-dark);
     }
 
     .payment-schedule-info {
