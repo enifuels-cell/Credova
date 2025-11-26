@@ -5,12 +5,6 @@ use Illuminate\Http\Request;
 
 class BorrowerController extends Controller
 {
-    public function index()
-    {
-        $borrowers = Borrower::with('loans')->paginate(20);
-        return view('borrowers.index', compact('borrowers'));
-    }
-
     public function show(Borrower $borrower)
     {
         $borrower->load(['loans.payments','payments']);
@@ -28,5 +22,16 @@ class BorrowerController extends Controller
         ]);
         $b = Borrower::create($data);
         return redirect()->route('borrowers.show', $b->id)->with('success', 'Borrower created successfully!');
+    }
+
+    public function destroy(Borrower $borrower)
+    {
+        $borrower->delete();
+
+        if (request()->wantsJson()) {
+            return response()->json(['success' => true, 'message' => 'Borrower deleted successfully']);
+        }
+
+        return redirect()->back()->with('success', 'Borrower deleted successfully!');
     }
 }

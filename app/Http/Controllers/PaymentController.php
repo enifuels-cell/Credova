@@ -13,6 +13,7 @@ class PaymentController extends Controller
             'amount'=>'required|numeric|min:0.01',
             'paid_at'=>'required|date',
             'method'=>'nullable|string',
+            'notes'=>'nullable|string',
         ]);
 
         $payment = Payment::create($data);
@@ -25,6 +26,16 @@ class PaymentController extends Controller
             $loan->balance = 0;
         }
         $loan->save();
+
+        // Return JSON if API request, otherwise redirect
+        if ($r->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Payment recorded successfully',
+                'payment' => $payment,
+                'loan' => $loan
+            ]);
+        }
 
         return redirect()->back()->with('success', 'Payment recorded successfully!');
     }

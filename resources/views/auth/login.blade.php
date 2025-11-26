@@ -240,6 +240,18 @@
 </head>
 
 <body>
+    <script>
+        // Unregister any problematic service workers on load
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(registrations => {
+                for (let registration of registrations) {
+                    registration.unregister().then(() => {
+                        console.log('Unregistered service worker');
+                    });
+                }
+            });
+        }
+    </script>
     <div class="login-container">
         <div class="login-content">
             <!-- Logo -->

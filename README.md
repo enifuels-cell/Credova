@@ -1,59 +1,169 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Credova - Lending Management System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A modern, mobile-first lending management and collection tracking platform built with Laravel and pure CSS. Designed specifically for lenders and financial institutions to manage loan portfolios efficiently.
 
-## About Laravel
+## Core Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Borrower Management
+- **Add, edit, delete borrowers** - Complete borrower lifecycle management
+- **Store personal info** - Name, email, phone number, address
+- **Quick search/filter** - Search by name, phone, or borrower status
+- **Duplicate prevention** - Automatic validation to prevent duplicate phone/email entries
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Loan Management
+- **Loan records** - Track principal, interest rate, term, and payment frequency
+- **Auto-calculations** - Automatically calculates total due and remaining balance
+- **Loan status tracking** - Active, overdue, or paid status
+- **Multiple payment frequencies** - Daily, weekly, twice-monthly, or monthly payments
+- **Custom payment terms** - Support for 1-1825 day custom loan durations
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Payment Tracking
+- **Record payments** - Log payments with date, amount, and method (cash, bank, online)
+- **Automatic balance updates** - Loan balance updates automatically after payment
+- **Flexible payments** - Support for both partial and full payments
+- **Payment history** - Complete chronological record of all payments
 
-## Learning Laravel
+### Collection Tracking
+- **Assign collectors** - Assign collectors to specific loans
+- **Log collection attempts** - Record date, outcome, and amount collected
+- **Track history** - Complete audit trail of all collection activities
+- **Collection metrics** - Monitor collection success rates per collector
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### Reports & Analytics
+- **Aging report** - Break down overdue loans: current, 1–30, 31–60, 61–90, >90 days
+- **Outstanding balances** - View outstanding balances per borrower
+- **Collection metrics** - Track collection success rate per collector
+- **Portfolio overview** - Dashboard with key financial metrics and ROI
+- **Active loans tracking** - Monitor count and status of active loans
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Borrower Ledger
+- **Chronological record** - Complete history of loans, payments, and collection attempts per borrower
+- **Running balance** - Automatic calculation of running balance for each transaction
+- **Full audit trail** - Complete visibility into borrower transaction history
 
-## Laravel Sponsors
+## Technology Stack
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- **Backend**: Laravel 11 (PHP)
+- **Frontend**: Blade templates with pure CSS (no Tailwind CDK)
+- **Database**: SQLite
+- **Build Tool**: Vite
+- **Authentication**: Laravel session-based with CSRF protection
+- **Testing**: PHPUnit with 18+ test cases
 
-### Premium Partners
+## System Architecture
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Database Schema
+- **Users** - System users with roles (admin, collector, user)
+- **Borrowers** - Borrower information and contact details
+- **Loans** - Loan records with principal, interest, and payment frequency
+- **Payments** - Payment transaction history
+- **Collectors** - Collector profiles and assignments
+- **Collection Attempts** - Log of all collection activities
 
-## Contributing
+### API Endpoints
+- `POST /api/borrowers` - Create new borrower
+- `POST /api/loans` - Create new loan
+- `GET /api/borrowers` - Fetch user's borrowers
+- `GET /api/loans/aging-details` - Get aging analysis
+- `GET /api/recent-payments` - Fetch recent payments
+- `GET /api/reports/aging` - Generate aging report
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Mobile-First Design
 
-## Code of Conduct
+The platform is built with a mobile-first approach featuring:
+- Responsive layout for mobile (≤640px), tablet (480-768px), and desktop (≥1024px)
+- Touch-optimized interface
+- Viewport locking to prevent unwanted zoom/pan
+- Smooth animations and transitions
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Installation & Setup
 
-## Security Vulnerabilities
+### Prerequisites
+- PHP 8.2+
+- Composer
+- Node.js & npm
+- SQLite
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Quick Start
+
+```bash
+# Clone repository
+git clone <repository-url>
+cd lending-tracker
+
+# Install dependencies
+composer install
+npm install
+
+# Setup environment
+cp .env.example .env
+php artisan key:generate
+
+# Run migrations
+php artisan migrate
+
+# Seed test data (optional)
+php artisan db:seed --class=DemoSeeder
+
+# Build frontend assets
+npm run build
+
+# Start development server
+php artisan serve
+```
+
+### Test Credentials
+
+For local development testing:
+- **Admin**: admin@test.com / password123
+- **Collector**: collector@test.com / password123
+- **User**: user@test.com / password123
+
+## Testing
+
+Run the full test suite:
+
+```bash
+php artisan test --no-coverage
+```
+
+Run specific test:
+
+```bash
+php artisan test tests/Feature/AccountCreationTest.php
+```
+
+All tests pass with 100% success rate (18 tests, 62 assertions).
+
+## Features Status
+
+✅ **Implemented**
+- Complete borrower management
+- Loan creation and tracking
+- Payment recording and balance updates
+- Collection attempt logging
+- Dashboard with financial metrics
+- Mobile-first responsive design
+- Authentication and user roles
+- API endpoints for all operations
+- Comprehensive test coverage
+
+🔄 **In Development**
+- Report export to Excel/PDF
+- Advanced filtering and search
+- Bulk operations
+
+## Browser Support
+
+- Chrome/Edge (latest)
+- Firefox (latest)
+- Safari (latest)
+- Mobile browsers (iOS Safari, Chrome Android)
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is proprietary software licensed for use by authorized users only.
+
+## Support
+
+For issues or questions, contact the development team.

@@ -45,19 +45,13 @@ Route::middleware('auth')->group(function () {
     });
 
     // Borrower Routes
-    Route::resource('borrowers', BorrowerController::class)->only(['index','show','store']);
+    Route::resource('borrowers', BorrowerController::class)->only(['show','store','destroy']);
 
     // Loan Routes
     Route::resource('loans', LoanController::class)->only(['show','store']);
 
     // Payment Routes
     Route::resource('payments', PaymentController::class)->only(['store']);
-
-    // Report Routes
-    Route::get('reports/aging', function() {
-        return view('reports.aging');
-    })->name('reports.aging');
-    Route::get('reports/ledger/{borrower}', [ReportController::class,'ledgerByBorrower'])->name('reports.ledger');
 
     // API routes for AJAX calls
     Route::post('/api/borrowers', function(\Illuminate\Http\Request $request) {
@@ -104,6 +98,8 @@ Route::middleware('auth')->group(function () {
 
         return response()->json($loan);
     });
+
+    Route::post('/api/payments', [PaymentController::class, 'store']);
 
     Route::get('/api/borrowers', function() {
         $user = Auth::user();
@@ -161,4 +157,12 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::get('/api/reports/aging', [ReportController::class,'agingReport'])->name('api.reports.aging');
+
+    // Export Routes
+    Route::get('/export/aging-report/excel', [ReportController::class,'exportAgingToExcel'])->name('export.aging.excel');
+    Route::get('/export/aging-report/pdf', [ReportController::class,'exportAgingToPdf'])->name('export.aging.pdf');
+    Route::get('/export/payments/excel', [ReportController::class,'exportPaymentsToExcel'])->name('export.payments.excel');
+    Route::get('/export/payments/pdf', [ReportController::class,'exportPaymentsToPdf'])->name('export.payments.pdf');
+    Route::get('/export/borrower/{borrower}/ledger/excel', [ReportController::class,'exportBorrowerLedgerToExcel'])->name('export.ledger.excel');
+    Route::get('/export/borrower/{borrower}/ledger/pdf', [ReportController::class,'exportBorrowerLedgerToPdf'])->name('export.ledger.pdf');
 });

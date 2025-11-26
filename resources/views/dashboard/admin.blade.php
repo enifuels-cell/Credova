@@ -1909,10 +1909,10 @@
       justify-content: space-between;
       align-items: center;
       padding: 16px;
-      background: linear-gradient(135deg, #f8fafc 0%, #f3f4f6 100%);
+      background: #FFFFFF;
       border-radius: 12px;
       margin-bottom: 12px;
-      border: 1px solid rgba(0,0,0,0.04);
+      border: 1px solid #E5E7EB;
       transition: all 0.2s ease;
       cursor: pointer;
     }
@@ -1925,7 +1925,8 @@
 
     .borrower-item:hover {
       transform: translateX(4px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      box-shadow: 0 4px 12px rgba(13, 27, 62, 0.1);
+      border-color: var(--brand);
     }
 
     .borrower-info {
@@ -1937,7 +1938,6 @@
       color: #0F172A;
       font-size: 15px;
       margin-bottom: 4px;
-      text-shadow: 0 0 1px rgba(0,0,0,0.05);
       line-height: 1.05;
       letter-spacing: -0.4px;
     }
@@ -1953,9 +1953,8 @@
 
     .borrower-amount {
       font-weight: 600;
-      color: #3b82f6;
+      color: #0F172A;
       font-size: 14px;
-      text-shadow: 0 0 1px rgba(0,0,0,0.05);
     }
 
     .payment-status {
@@ -2131,6 +2130,10 @@
             <div class="financial-row-label">Return on Investment</div>
             <div class="financial-row-value green" id="roiPercentage">0%</div>
           </div>
+          <div class="financial-row">
+            <div class="financial-row-label">Portfolio Status</div>
+            <div class="financial-row-value" id="portfolioStatus">Healthy</div>
+          </div>
         </div>
       </div>
     </div>
@@ -2146,6 +2149,41 @@
       <h2>Recent Payments</h2>
       <div id="recentPaymentsList">
         <!-- Recent payments will be loaded here from API -->
+      </div>
+    </div>
+
+    <!-- Export Reports -->
+    <div class="section" style="background: linear-gradient(135deg, #f3f4f6 0%, #ffffff 100%); border-radius: 12px; padding: 30px; margin-top: 40px;">
+      <h2 style="margin-top: 0; color: #0D3B66;">Export Reports</h2>
+      <p style="color: #6B7280; margin-bottom: 20px;">Download your reports in Excel or PDF format for record keeping and analysis.</p>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+        <!-- Aging Report -->
+        <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+          <h3 style="margin-top: 0; color: #0D3B66; font-size: 16px;">Aging Report</h3>
+          <p style="color: #6B7280; font-size: 14px;">Loans organized by overdue days</p>
+          <div style="display: flex; gap: 10px; margin-top: 15px;">
+            <a href="{{ route('export.aging.excel') }}" class="btn-main" style="flex: 1; text-align: center; text-decoration: none; padding: 10px; font-size: 13px;">📊 Excel</a>
+            <a href="{{ route('export.aging.pdf') }}" class="btn-main" style="flex: 1; text-align: center; text-decoration: none; padding: 10px; font-size: 13px;">📄 PDF</a>
+          </div>
+        </div>
+
+        <!-- Payment History -->
+        <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+          <h3 style="margin-top: 0; color: #0D3B66; font-size: 16px;">Payment History</h3>
+          <p style="color: #6B7280; font-size: 14px;">All payment transactions</p>
+          <div style="display: flex; gap: 10px; margin-top: 15px;">
+            <a href="{{ route('export.payments.excel') }}" class="btn-main" style="flex: 1; text-align: center; text-decoration: none; padding: 10px; font-size: 13px;">📊 Excel</a>
+            <a href="{{ route('export.payments.pdf') }}" class="btn-main" style="flex: 1; text-align: center; text-decoration: none; padding: 10px; font-size: 13px;">📄 PDF</a>
+          </div>
+        </div>
+
+        <!-- Borrower Ledgers -->
+        <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+          <h3 style="margin-top: 0; color: #0D3B66; font-size: 16px;">Borrower Ledgers</h3>
+          <p style="color: #6B7280; font-size: 14px;">Individual borrower transaction history</p>
+          <p style="color: #9CA3AF; font-size: 12px; margin-bottom: 10px;">Select from View Accounts to export individual ledgers</p>
+        </div>
       </div>
     </div>
   </div>
@@ -2324,9 +2362,12 @@
       </div>
       <form id="updatePaymentForm" onsubmit="handlePaymentUpdate(event)">
         <div class="modal-body">
-          <div style="background: linear-gradient(135deg, #f8fafc 0%, #f3f4f6 100%); padding: 16px; border-radius: 12px; margin-bottom: 20px;">
-            <div style="font-weight: 700; color: #0f172a; margin-bottom: 4px; font-size: 14px;" id="updateBorrowerName">Juan Dela Cruz</div>
-            <div style="font-size: 12px; color: #64748b; margin-bottom: 8px;">Account Information</div>
+          <div style="background: linear-gradient(135deg, #f8fafc 0%, #f3f4f6 100%); padding: 16px; border-radius: 12px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-start;">
+            <div>
+              <div style="font-weight: 700; color: #0f172a; margin-bottom: 4px; font-size: 14px;" id="updateBorrowerName">Juan Dela Cruz</div>
+              <div style="font-size: 12px; color: #64748b; margin-bottom: 8px;">Account Information</div>
+            </div>
+            <button type="button" style="background-color: #ef4444; border: none; cursor: pointer; color: white; padding: 6px 12px; border-radius: 6px; font-size: 12px; white-space: nowrap; font-weight: 600;" onclick="deleteCurrentBorrower()">🗑️ Delete</button>
           </div>
 
           <!-- Payment Summary -->
@@ -2535,11 +2576,25 @@
               <div class="borrower-loan">Loan Duration: ${borrower.days} days | Total Loan: ₱${borrower.amount.toLocaleString()}</div>
               <div class="borrower-amount">Paid: ₱${borrower.paidAmount.toLocaleString()} | Remaining: <strong>₱${remainingBalance.toLocaleString()}</strong></div>
             </div>
-            <div class="payment-status ${statusClass}">${statusText}</div>
+            <div class="payment-status ${statusClass}" style="display: flex; align-items: center; gap: 10px; justify-content: space-between;">
+              <span>${statusText}</span>
+              <div style="display: flex; gap: 5px;" onclick="event.stopPropagation();">
+                <a href="/export/borrower/${borrower.id}/ledger/excel" class="btn-main" style="padding: 6px 12px; font-size: 11px; white-space: nowrap; text-decoration: none;">📊 Excel</a>
+                <a href="/export/borrower/${borrower.id}/ledger/pdf" class="btn-main" style="padding: 6px 12px; font-size: 11px; white-space: nowrap; text-decoration: none;">📄 PDF</a>
+              </div>
+            </div>
           </div>
         `;
         borrowersList.innerHTML += borrowerHTML;
       });
+
+      // Calculate and update total remaining balance
+      const totalRemaining = borrowersData.reduce((sum, borrower) => {
+        return sum + (borrower.amount - borrower.paidAmount);
+      }, 0);
+
+      document.getElementById('totalBalance').textContent = `₱${totalRemaining.toLocaleString()}`;
+      document.getElementById('borrowerCount').textContent = `${borrowersData.length} borrower${borrowersData.length !== 1 ? 's' : ''}`;
 
       updateDashboardMetrics();
     }
@@ -2571,6 +2626,15 @@
     function closeUpdatePaymentModal() {
       document.getElementById('updatePaymentModal').style.display = 'none';
       document.getElementById('updatePaymentForm').reset();
+    }
+
+    function deleteCurrentBorrower() {
+      const borrowerId = document.getElementById('updatePaymentForm').dataset.borrowerId;
+      const borrower = borrowersData.find(b => b.id == borrowerId);
+
+      if (borrower && confirm(`Are you sure you want to delete ${borrower.name}? This action cannot be undone.`)) {
+        deleteBorrower(borrowerId, borrower.name);
+      }
     }
 
     function openActiveLoansModal() {
@@ -2612,7 +2676,7 @@
       }
     }
 
-    function handlePaymentUpdate(event) {
+    async function handlePaymentUpdate(event) {
       event.preventDefault();
 
       const borrowerId = parseInt(document.getElementById('updatePaymentForm').dataset.borrowerId);
@@ -2630,27 +2694,85 @@
         return;
       }
 
-      // Update borrower data
-      borrower.paidAmount += paymentAmount;
-      const newRemainingBalance = borrower.amount - borrower.paidAmount;
+      try {
+        // Send payment to backend API
+        const response = await fetch('/api/payments', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+          },
+          body: JSON.stringify({
+            loan_id: borrowerId,
+            amount: paymentAmount,
+            paid_at: new Date().toISOString().split('T')[0],
+            method: 'cash',
+            notes: 'Payment recorded from dashboard'
+          })
+        });
 
-      // Show confirmation
-      alert(`✓ Payment of ₱${paymentAmount.toLocaleString()} recorded for ${borrower.name}\nNew Balance: ₱${newRemainingBalance.toLocaleString()}`);
+        if (!response.ok) {
+          throw new Error('Failed to record payment');
+        }
 
-      // Close modal and reload borrowers list
-      closeUpdatePaymentModal();
-      loadBorrowersList();
+        // Update borrower data
+        borrower.paidAmount += paymentAmount;
+        const newRemainingBalance = borrower.amount - borrower.paidAmount;
 
-      // Update all dashboard metrics and borrowers performance
-      updateDashboardMetrics();
-      renderBorrowersPerformance();
+        // Show confirmation
+        alert(`✓ Payment of ₱${paymentAmount.toLocaleString()} recorded for ${borrower.name}\nNew Balance: ₱${newRemainingBalance.toLocaleString()}`);
 
-      // In production, send this to your Laravel backend:
-      // fetch(`/api/borrowers/${borrowerId}/payment`, {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ amount: paymentAmount })
-      // })
+        // Close modal and reload borrowers list
+        closeUpdatePaymentModal();
+
+        // Refresh data from backend
+        await fetchBorrowersData();
+        loadBorrowersList();
+
+        // Update all dashboard metrics and borrowers performance
+        updateDashboardMetrics();
+        renderBorrowersPerformance();
+
+      } catch (error) {
+        console.error('Error recording payment:', error);
+        alert('Error recording payment. Please try again.');
+      }
+    }
+
+    async function deleteBorrower(borrowerId, borrowerName) {
+      if (!confirm(`Are you sure you want to delete ${borrowerName}? This action cannot be undone.`)) {
+        return;
+      }
+
+      try {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        const response = await fetch(`/borrowers/${borrowerId}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken,
+            'Accept': 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to delete borrower');
+        }
+
+        alert(`✓ ${borrowerName} has been deleted successfully`);
+
+        // Refresh data from backend
+        await fetchBorrowersData();
+        loadBorrowersList();
+
+        // Update all dashboard metrics
+        updateDashboardMetrics();
+        renderBorrowersPerformance();
+
+      } catch (error) {
+        console.error('Error deleting borrower:', error);
+        alert('Error deleting borrower. Please try again.');
+      }
     }
 
     function renderActiveLoansModal() {
@@ -2791,17 +2913,24 @@
       // Determine portfolio status
       const status = roi > 0 ? 'Profitable' : 'Pending';
 
-      // Update UI elements
-      document.getElementById('todayCollectible').textContent = totalRemaining.toLocaleString();
-      document.getElementById('totalCollected').textContent = `₱${totalPaid.toLocaleString()}`;
-      document.getElementById('activeLoansCount').textContent = activeLoanCount;
-      document.getElementById('overdueCount').textContent = overdueCount;
-      document.getElementById('avgROI').textContent = `${roi}%`;
-      document.getElementById('capitalReleased').textContent = `₱${totalLoaned.toLocaleString()}`;
-      document.getElementById('interestEarned').textContent = `₱${interestEarned.toLocaleString()}`;
-      document.getElementById('roiPercentage').textContent = `${roi}%`;
-      document.getElementById('portfolioStatus').textContent = status;
-      document.getElementById('totalRemainingBalanceCard').textContent = `₱${totalRemaining.toLocaleString()}`;
+      // Update UI elements with null checks
+      const updateElement = (id, content) => {
+        const element = document.getElementById(id);
+        if (element) {
+          element.textContent = content;
+        }
+      };
+
+      updateElement('todayCollectible', totalRemaining.toLocaleString());
+      updateElement('totalCollected', totalPaid.toLocaleString());
+      updateElement('activeLoansCount', activeLoanCount);
+      updateElement('overdueCount', overdueCount);
+      updateElement('avgROI', `${roi}%`);
+      updateElement('capitalReleased', `₱${totalLoaned.toLocaleString()}`);
+      updateElement('interestEarned', `₱${interestEarned.toLocaleString()}`);
+      updateElement('roiPercentage', `${roi}%`);
+      updateElement('portfolioStatus', status);
+      updateElement('totalRemainingBalanceCard', `₱${totalRemaining.toLocaleString()}`);
 
       // Chart uses static SVG
     }
@@ -3237,6 +3366,17 @@
         e.preventDefault();
       }
     }, { passive: false });
+
+    // Clean up any problematic service workers
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(registrations => {
+        for (let registration of registrations) {
+          registration.unregister();
+        }
+      }).catch(error => {
+        console.log('Service Worker cleanup error:', error);
+      });
+    }
   </script>
 
   <footer class="dashboard-footer">

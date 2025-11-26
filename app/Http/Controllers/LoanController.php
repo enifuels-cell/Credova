@@ -63,35 +63,4 @@ class LoanController extends Controller
 
         return view('loans.show', compact('loan','ledger'));
     }
-
-    // New method: get overdue loans / aging report
-    public function overdue()
-    {
-        // Eloquent query for all overdue loans
-        $overdue = Loan::where('status', '!=', 'paid')
-            ->whereRaw('DATEDIFF(CURDATE(), first_due_date) > 0')
-            ->orderByRaw('DATEDIFF(CURDATE(), first_due_date) DESC')
-            ->get();
-
-        // Optional: you can group into aging buckets
-        $aging = [
-            '1_30' => 0,
-            '31_60' => 0,
-            '61_90' => 0,
-            'gt_90' => 0,
-            'total' => 0
-        ];
-
-        foreach ($overdue as $loan) {
-            $days = now()->diffInDays($loan->first_due_date, false);
-            if ($days >= 1 && $days <= 30) $aging['1_30'] += $loan->balance;
-            elseif ($days >= 31 && $days <= 60) $aging['31_60'] += $loan->balance;
-            elseif ($days >= 61 && $days <= 90) $aging['61_90'] += $loan->balance;
-            elseif ($days > 90) $aging['gt_90'] += $loan->balance;
-
-            $aging['total'] += $loan->balance;
-        }
-
-        return view('loans.overdue', compact('overdue','aging'));
-    }
 }
