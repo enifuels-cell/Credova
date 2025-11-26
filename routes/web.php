@@ -120,7 +120,8 @@ Route::middleware('auth')->group(function () {
                 'paidAmount' => $totalPaid,
                 'days' => $borrower->loans->first()?->term ?? 0,
                 'dueDate' => $borrower->loans->first()?->first_due_date?->toDateString(),
-                'status' => 'active'
+                'status' => 'active',
+                'loanIds' => $borrower->loans->pluck('id')->toArray()
             ];
         });
 

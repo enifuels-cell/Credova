@@ -2612,9 +2612,14 @@
       document.getElementById('updateRemainingBalance').textContent = `₱${remainingBalance.toLocaleString()}`;
       document.getElementById('newRemainingBalance').textContent = `₱${remainingBalance.toLocaleString()}`;
 
-      // Clear input and set data attribute
+      // Clear input and set data attributes (borrowerId and first active loan's ID)
       document.getElementById('paymentAmount').value = '';
       document.getElementById('updatePaymentForm').dataset.borrowerId = borrowerId;
+
+      // Store the first active loan ID from the borrower's loans
+      if (borrower.loanIds && borrower.loanIds.length > 0) {
+        document.getElementById('updatePaymentForm').dataset.loanId = borrower.loanIds[0];
+      }
 
       // Open modal
       document.getElementById('updatePaymentModal').style.display = 'block';
@@ -2680,11 +2685,17 @@
       event.preventDefault();
 
       const borrowerId = parseInt(document.getElementById('updatePaymentForm').dataset.borrowerId);
+      const loanId = parseInt(document.getElementById('updatePaymentForm').dataset.loanId);
       const paymentAmount = parseFloat(document.getElementById('paymentAmount').value);
       const borrower = borrowersData.find(b => b.id === borrowerId);
 
       if (!borrower || paymentAmount <= 0) {
         alert('Please enter a valid payment amount');
+        return;
+      }
+
+      if (!loanId) {
+        alert('No active loan found for this borrower');
         return;
       }
 
@@ -2695,7 +2706,7 @@
       }
 
       try {
-        // Send payment to backend API
+        // Send payment to backend API with correct loan_id
         const response = await fetch('/api/payments', {
           method: 'POST',
           headers: {
@@ -2703,7 +2714,7 @@
             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
           },
           body: JSON.stringify({
-            loan_id: borrowerId,
+            loan_id: loanId,
             amount: paymentAmount,
             paid_at: new Date().toISOString().split('T')[0],
             method: 'cash',
@@ -2712,7 +2723,8 @@
         });
 
         if (!response.ok) {
-          throw new Error('Failed to record payment');
+          const error = await response.json();
+          throw new Error(error.message || 'Failed to record payment');
         }
 
         // Update borrower data
@@ -2735,7 +2747,7 @@
 
       } catch (error) {
         console.error('Error recording payment:', error);
-        alert('Error recording payment. Please try again.');
+        alert('Error recording payment: ' + error.message);
       }
     }
 
