@@ -17,7 +17,7 @@ class CreateLoansTable extends Migration
             $table->decimal('interest_rate', 5, 2)->default(0);
             $table->date('issued_at')->nullable(); // Added
             $table->date('first_due_date');
-            $table->enum('frequency', ['daily', 'weekly', 'monthly'])->default('monthly'); // Added
+            $table->enum('frequency', ['daily', 'weekly', 'twice-monthly', 'monthly'])->default('monthly'); // Added
             $table->integer('term')->nullable(); // Added, e.g., number of periods
             $table->enum('status', ['active', 'paid', 'defaulted'])->default('active');
             $table->text('notes')->nullable(); // Added
