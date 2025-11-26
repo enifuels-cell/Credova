@@ -62,6 +62,19 @@ Route::middleware('auth')->group(function () {
     // API routes for AJAX calls
     Route::post('/api/borrowers', function(\Illuminate\Http\Request $request) {
         $user = Auth::user();
+
+        // Check if phone number already exists
+        $phone = $request->input('phone');
+        if ($phone && \App\Models\Borrower::where('phone', $phone)->exists()) {
+            return response()->json(['error' => 'Phone number already registered'], 409);
+        }
+
+        // Check if email already exists
+        $email = $request->input('email');
+        if ($email && \App\Models\Borrower::where('email', $email)->exists()) {
+            return response()->json(['error' => 'Email already registered'], 409);
+        }
+
         $borrower = $user->borrowers()->create([
             'first_name' => $request->input('fullName'),
             'email' => $request->input('email'),
@@ -73,14 +86,20 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::post('/api/loans', function(\Illuminate\Http\Request $request) {
+        $principal = $request->input('principal');
+        $interest_rate = $request->input('interest_rate');
+        $total_payable = $request->input('total_payable');
+
         $loan = \App\Models\Loan::create([
             'borrower_id' => $request->input('borrower_id'),
-            'principal' => $request->input('principal'),
+            'principal' => $principal,
+            'balance' => $principal,  // Initialize balance to principal
+            'total_due' => $total_payable,
             'term' => $request->input('term'),
-            'interest_rate' => $request->input('interest_rate'),
-            'total_payable' => $request->input('total_payable'),
+            'interest_rate' => $interest_rate,
             'status' => 'active',
             'first_due_date' => now()->addDays($request->input('term')),
+            'frequency' => $request->input('payment_frequency', 'monthly'),
         ]);
 
         return response()->json($loan);

@@ -2932,7 +2932,15 @@
         console.log('Borrower Response Status:', response.status);
         if (!response.ok) {
           return response.text().then(text => {
-            throw new Error(`HTTP ${response.status}: ${text}`);
+            try {
+              const json = JSON.parse(text);
+              throw new Error(json.error || `HTTP ${response.status}: ${text}`);
+            } catch (e) {
+              if (e.message.startsWith('{')) {
+                throw e;
+              }
+              throw new Error(`HTTP ${response.status}: ${text}`);
+            }
           });
         }
         return response.json();
