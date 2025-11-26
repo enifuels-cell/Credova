@@ -1690,6 +1690,17 @@
       }
     }
 
+    @keyframes slideInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     .modal-header {
       background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
       color: white;
@@ -2139,6 +2150,41 @@
     </div>
   </div>
 
+  <!-- Receipt Modal -->
+  <div id="receiptModal" class="modal" style="display: none; z-index: 9999;">
+    <div class="modal-content" style="max-width: 500px; max-height: auto; margin: 15% auto; animation: slideInDown 0.3s ease-out;">
+      <div class="modal-header" style="text-align: center; padding: 40px 32px;">
+        <div style="font-size: 48px; margin-bottom: 16px;">✓</div>
+        <h2 style="margin: 0; color: white;">Account Created!</h2>
+        <p style="margin: 8px 0 0; opacity: 0.9;">Loan details below</p>
+      </div>
+
+      <div class="modal-body" style="padding: 32px; text-align: center;">
+        <!-- Receipt Content -->
+        <div id="receiptContent" style="text-align: left;">
+          <!-- Populated by JavaScript -->
+        </div>
+
+        <!-- Confirmation Button -->
+        <button onclick="closeReceiptAndReturn()" style="
+          width: 100%;
+          padding: 16px 24px;
+          margin-top: 24px;
+          background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
+          color: white;
+          border: none;
+          border-radius: 12px;
+          font-size: 16px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        " onmouseover="this.style.boxShadow='0 8px 24px rgba(13, 59, 102, 0.3)'" onmouseout="this.style.boxShadow='none'">
+          Back to Dashboard
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Add Account Modal -->
   <div id="addAccountModal" class="modal">
     <div class="modal-content">
@@ -2371,6 +2417,17 @@
       document.getElementById('scheduleInfo').style.display = 'none';
     }
 
+    function closeReceiptAndReturn() {
+      // Hide receipt modal
+      document.getElementById('receiptModal').style.display = 'none';
+
+      // Clear receipt content
+      document.getElementById('receiptContent').innerHTML = '';
+
+      // Scroll to top of page
+      window.scrollTo(0, 0);
+    }
+
     function openViewAccountsModal() {
       document.getElementById('viewAccountsModal').style.display = 'block';
       loadBorrowersList();
@@ -2388,6 +2445,7 @@
       const activeLoansModal = document.getElementById('activeLoansModal');
       const overdueModal = document.getElementById('overdueModal');
       const roiModal = document.getElementById('roiModal');
+      const receiptModal = document.getElementById('receiptModal');
       if (event.target === addModal) {
         closeModal();
       }
@@ -2405,6 +2463,9 @@
       }
       if (event.target === roiModal) {
         closeROIModal();
+      }
+      if (event.target === receiptModal) {
+        closeReceiptAndReturn();
       }
     }
 
@@ -2981,14 +3042,67 @@
       })
       .then(data => {
         console.log('Loan Created:', data);
-        alert(`Account created for ${formData.borrowerName}\nLoan: ₱${formData.loanAmount}\nDuration: ${formData.loanDays} days\nPayment: ${formData.paymentFrequency}`);
 
-        // Clear form and close modal
+        // Calculate the interest amount
+        const principal = parseInt(formData.loanAmount);
+        const interest_rate = parseFloat(formData.interestRate);
+        const interest_amount = (principal * interest_rate) / 100;
+
+        // Get due date
+        const dueDate = new Date();
+        dueDate.setDate(dueDate.getDate() + parseInt(formData.loanDays));
+
+        // Populate receipt
+        const receiptHTML = `
+          <div style="background: #f8f9fa; padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid #e5e7eb; padding-bottom: 12px;">
+              <span style="color: var(--text-muted); font-size: 14px;">Borrower Name</span>
+              <strong style="color: var(--text-main);">${formData.borrowerName}</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid #e5e7eb; padding-bottom: 12px;">
+              <span style="color: var(--text-muted); font-size: 14px;">Loan Amount</span>
+              <strong style="color: var(--brand); font-size: 16px;">₱${parseInt(formData.loanAmount).toLocaleString()}</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid #e5e7eb; padding-bottom: 12px;">
+              <span style="color: var(--text-muted); font-size: 14px;">Interest Rate</span>
+              <strong style="color: var(--text-main);">${formData.interestRate}%</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid #e5e7eb; padding-bottom: 12px;">
+              <span style="color: var(--text-muted); font-size: 14px;">Interest Amount</span>
+              <strong style="color: var(--text-main);">₱${Math.round(interest_amount).toLocaleString()}</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid #e5e7eb; padding-bottom: 12px;">
+              <span style="color: var(--text-muted); font-size: 14px;">Total Payable</span>
+              <strong style="color: var(--brand); font-size: 18px;">₱${(parseInt(formData.loanAmount) + Math.round(interest_amount)).toLocaleString()}</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid #e5e7eb; padding-bottom: 12px;">
+              <span style="color: var(--text-muted); font-size: 14px;">Duration</span>
+              <strong style="color: var(--text-main);">${formData.loanDays} days</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding-bottom: 0;">
+              <span style="color: var(--text-muted); font-size: 14px;">Due Date</span>
+              <strong style="color: var(--text-main);">${dueDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-top: 12px; border-top: 1px solid #e5e7eb; padding-top: 12px;">
+              <span style="color: var(--text-muted); font-size: 14px;">Payment Frequency</span>
+              <strong style="color: var(--text-main); text-transform: capitalize;">${formData.paymentFrequency.replace('-', ' ')}</strong>
+            </div>
+          </div>
+        `;
+
+        document.getElementById('receiptContent').innerHTML = receiptHTML;
+
+        // Show receipt modal
+        document.getElementById('receiptModal').style.display = 'block';
+
+        // Clear form and close add account modal
         document.getElementById('addAccountForm').reset();
         closeModal();
 
-        // Reload the borrowers data from the server
-        fetchBorrowersData();
+        // Reload the borrowers data from the server after 2 seconds
+        setTimeout(() => {
+          fetchBorrowersData();
+        }, 500);
 
         submitBtn.innerText = originalText;
         submitBtn.disabled = false;
