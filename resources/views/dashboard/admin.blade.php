@@ -2183,8 +2183,19 @@
               <input type="number" id="loanAmount" name="loanAmount" placeholder="50000" min="1000" required onchange="updatePayableAmount()">
             </div>
             <div class="form-group">
-              <label for="loanDays">Contract Days *</label>
-              <input type="number" id="loanDays" name="loanDays" placeholder="30" min="1" required>
+              <label for="loanDays">Contract Duration *</label>
+              <select id="loanDays" name="loanDays" required onchange="handleLoanDaysChange()">
+                <option value="">-- Select Duration --</option>
+                <option value="7">Weekly (7 days)</option>
+                <option value="14">Bi-weekly (14 days)</option>
+                <option value="30">Monthly (30 days)</option>
+                <option value="60">2 Months (60 days)</option>
+                <option value="90">3 Months (90 days)</option>
+                <option value="180">6 Months (180 days)</option>
+                <option value="365">1 Year (365 days)</option>
+                <option value="custom">Custom Days</option>
+              </select>
+              <input type="number" id="customLoanDays" name="customLoanDays" placeholder="Enter custom days" min="1" style="display: none; margin-top: 8px;" onchange="validateCustomDays()">
             </div>
           </div>
 
@@ -2803,42 +2814,112 @@
       }
     }
 
+    // Handle loan days dropdown change
+    function handleLoanDaysChange() {
+      const loanDaysSelect = document.getElementById('loanDays');
+      const customLoanDaysInput = document.getElementById('customLoanDays');
+
+      if (loanDaysSelect.value === 'custom') {
+        customLoanDaysInput.style.display = 'block';
+        customLoanDaysInput.focus();
+      } else {
+        customLoanDaysInput.style.display = 'none';
+        customLoanDaysInput.value = ''; // Clear custom input when switching to preset
+      }
+    }
+
+    // Validate custom loan days input
+    function validateCustomDays() {
+      const customInput = document.getElementById('customLoanDays');
+      const value = parseInt(customInput.value);
+
+      if (!customInput.value) {
+        customInput.style.borderColor = '#DC2626';
+        return false;
+      }
+
+      if (isNaN(value) || value < 1) {
+        alert('Please enter a valid number of days (minimum 1)');
+        customInput.style.borderColor = '#DC2626';
+        return false;
+      }
+
+      if (value > 1825) {
+        alert('Please enter a value of 1825 days (5 years) or less');
+        customInput.style.borderColor = '#DC2626';
+        return false;
+      }
+
+      customInput.style.borderColor = '#E5E7EB';
+      return true;
+    }
+
     // Handle form submission
     function handleAddAccount(event) {
       event.preventDefault();
 
+      // Show loading state
+      const submitBtn = event.target.querySelector('button[type="submit"]');
+      const originalText = submitBtn.innerText;
+      submitBtn.innerText = 'Creating...';
+      submitBtn.disabled = true;
+
       // Collect form data
+      const loanDaysSelect = document.getElementById('loanDays').value;
+      let loanDaysValue = loanDaysSelect;
+
+      // If custom days selected, get the custom input value
+      if (loanDaysSelect === 'custom') {
+        loanDaysValue = document.getElementById('customLoanDays').value;
+        if (!loanDaysValue || isNaN(parseInt(loanDaysValue)) || parseInt(loanDaysValue) < 1) {
+          alert('Please enter a valid number of days');
+          submitBtn.innerText = originalText;
+          submitBtn.disabled = false;
+          return;
+        }
+      }
+
       const formData = {
         borrowerName: document.getElementById('borrowerName').value,
         borrowerEmail: document.getElementById('borrowerEmail').value,
         borrowerPhone: document.getElementById('borrowerPhone').value,
         borrowerAddress: document.getElementById('borrowerAddress').value,
         loanAmount: document.getElementById('loanAmount').value,
-        loanDays: document.getElementById('loanDays').value,
+        loanDays: loanDaysValue,
         interestRate: document.getElementById('interestRate').value,
         paymentFrequency: document.getElementById('paymentFrequency').value,
         paymentDay1: document.getElementById('paymentDay1').value || null,
         paymentDay2: document.getElementById('paymentDay2').value || null,
       };
 
+      console.log('Form Data:', formData);
+
       // Validate twice-monthly payment days
       if (formData.paymentFrequency === 'twice-monthly') {
         if (!formData.paymentDay1 || !formData.paymentDay2) {
           alert('Please specify both payment days for twice-monthly payments');
+          submitBtn.innerText = originalText;
+          submitBtn.disabled = false;
           return;
         }
         if (formData.paymentDay1 === formData.paymentDay2) {
           alert('Payment days must be different');
+          submitBtn.innerText = originalText;
+          submitBtn.disabled = false;
           return;
         }
       }
+
+      // Get CSRF token
+      const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+      console.log('CSRF Token:', csrfToken);
 
       // Send to Laravel backend
       fetch('/api/borrowers', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
+          'X-CSRF-TOKEN': csrfToken || ''
         },
         body: JSON.stringify({
           fullName: formData.borrowerName,
@@ -2847,8 +2928,17 @@
           address: formData.borrowerAddress
         })
       })
-      .then(response => response.json())
+      .then(response => {
+        console.log('Borrower Response Status:', response.status);
+        if (!response.ok) {
+          return response.text().then(text => {
+            throw new Error(`HTTP ${response.status}: ${text}`);
+          });
+        }
+        return response.json();
+      })
       .then(borrower => {
+        console.log('Borrower Created:', borrower);
         // Now create the loan for this borrower
         const principal = parseInt(formData.loanAmount);
         const term = parseInt(formData.loanDays);
@@ -2860,7 +2950,7 @@
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content || ''
+            'X-CSRF-TOKEN': csrfToken || ''
           },
           body: JSON.stringify({
             borrower_id: borrower.id,
@@ -2872,19 +2962,34 @@
           })
         });
       })
-      .then(response => response.json())
+      .then(response => {
+        console.log('Loan Response Status:', response.status);
+        if (!response.ok) {
+          return response.text().then(text => {
+            throw new Error(`HTTP ${response.status}: ${text}`);
+          });
+        }
+        return response.json();
+      })
       .then(data => {
+        console.log('Loan Created:', data);
         alert(`Account created for ${formData.borrowerName}\nLoan: ₱${formData.loanAmount}\nDuration: ${formData.loanDays} days\nPayment: ${formData.paymentFrequency}`);
 
         // Clear form and close modal
+        document.getElementById('addAccountForm').reset();
         closeModal();
 
         // Reload the borrowers data from the server
         fetchBorrowersData();
+
+        submitBtn.innerText = originalText;
+        submitBtn.disabled = false;
       })
       .catch(error => {
         console.error('Error creating account:', error);
-        alert('Error creating account. Please try again.');
+        alert(`Error creating account: ${error.message}`);
+        submitBtn.innerText = originalText;
+        submitBtn.disabled = false;
       });
     }
 
