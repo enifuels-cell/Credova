@@ -53,12 +53,15 @@ class LoginWorkflowTest extends TestCase
             $this->assertAuthenticated();
             echo "✓ User is authenticated\n";
 
-            // Step 6: Check redirect location
+            // Step 6: Check redirect location (now goes to verify-pin or setup-pin)
             echo "\nStep 6: Checking redirect destination...\n";
             $location = $loginResponse->headers->get('Location');
             echo "Redirected to: " . $location . "\n";
-            $this->assertStringContainsString('dashboard', $location);
-            echo "✓ Redirected to dashboard\n";
+            $this->assertTrue(
+                str_contains($location, 'verify-pin') || str_contains($location, 'setup-pin'),
+                'Should redirect to PIN setup or verification'
+            );
+            echo "✓ Redirected to PIN setup/verification\n";
 
         } else if ($loginResponse->getStatusCode() === 419) {
             echo "✗ CSRF validation failed (HTTP 419)\n";

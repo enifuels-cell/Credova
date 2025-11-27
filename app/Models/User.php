@@ -58,4 +58,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Borrower::class);
     }
+
+    public function userPin()
+    {
+        return $this->hasOne(UserPin::class);
+    }
+
+    public function trustedDevices()
+    {
+        return $this->hasMany(TrustedDevice::class);
+    }
 }

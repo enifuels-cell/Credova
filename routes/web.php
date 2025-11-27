@@ -14,6 +14,18 @@ Route::get('/register', [AuthController::class, 'showRegister'])->name('register
 Route::post('/register', [AuthController::class, 'register'])->middleware('guest');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
+// PIN Setup Routes (for new users)
+Route::middleware('auth')->group(function () {
+    Route::get('/setup-pin', [AuthController::class, 'showSetupPin'])->name('setup-pin');
+    Route::post('/setup-pin', [AuthController::class, 'storeSetupPin'])->name('store-setup-pin');
+});
+
+// PIN Verification Routes (for non-trusted devices)
+Route::middleware('auth')->group(function () {
+    Route::get('/verify-pin', [AuthController::class, 'showVerifyPin'])->name('verify-pin');
+    Route::post('/verify-pin', [AuthController::class, 'verifyPin'])->name('verify-pin-submit');
+});
+
 // Public FAQ Route
 Route::get('/faq', function() {
     return view('faq');
