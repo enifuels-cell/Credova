@@ -13,23 +13,11 @@ Route::post('/login', [AuthController::class, 'login'])->middleware('guest');
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register')->middleware('guest');
 Route::post('/register', [AuthController::class, 'register'])->middleware('guest');
 
-// PIN-only login (for users who already have PIN set)
+// PIN-only login (for users who have PIN set)
 Route::get('/pin-login', [AuthController::class, 'showPinLogin'])->name('pin-login')->middleware('guest');
 Route::post('/pin-login', [AuthController::class, 'pinLogin'])->name('pin-login-submit')->middleware('guest');
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
-
-// PIN Setup Routes (for new users)
-Route::middleware('auth')->group(function () {
-    Route::get('/setup-pin', [AuthController::class, 'showSetupPin'])->name('setup-pin');
-    Route::post('/setup-pin', [AuthController::class, 'storeSetupPin'])->name('store-setup-pin');
-});
-
-// PIN Verification Routes (for non-trusted devices after email/password login)
-Route::middleware('auth')->group(function () {
-    Route::get('/verify-pin', [AuthController::class, 'showVerifyPin'])->name('verify-pin-page');
-    Route::post('/verify-pin', [AuthController::class, 'verifyPin'])->name('verify-pin-submit');
-});
 
 // Public FAQ Route
 Route::get('/faq', function() {
@@ -55,6 +43,10 @@ Route::get('/cookies', function() {
 Route::middleware('auth')->group(function () {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Settings
+    Route::get('/settings', [AuthController::class, 'showSettings'])->name('settings');
+    Route::post('/settings/update-pin', [AuthController::class, 'updatePin'])->name('settings.update-pin');
 
     // Redirect root to dashboard if authenticated
     Route::get('/', function(){

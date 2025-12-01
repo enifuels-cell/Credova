@@ -351,7 +351,7 @@
             <!-- Header -->
             <div class="header">
                 <h1>🔐 PIN Login</h1>
-                <p>Enter your PIN</p>
+                <p>Enter your PIN to access your account</p>
             </div>
 
             <!-- Error Messages -->
@@ -363,20 +363,12 @@
                 </div>
             @endif
 
-            <!-- Info -->
+            <!-- Account Info -->
             <div class="info-box">
-                ℹ️ Enter your email and PIN to access your account
+                ℹ️ Logging in as: <strong>{{ $email }}</strong>
             </div>
 
-            <!-- Email Input (Visible) -->
-            <div class="email-input-group">
-                <input type="email"
-                       name="email"
-                       id="emailInput"
-                       placeholder="Enter your email"
-                       value="{{ old('email', request('email', '')) }}"
-                       required>
-            </div>            <!-- PIN Display -->
+            <!-- PIN Display -->
             <div class="pin-display-container">
                 <div class="pin-display" id="pinDisplay">
                     <div class="pin-dot"></div>
@@ -392,7 +384,6 @@
             <form id="pinForm" method="POST" action="{{ route('pin-login-submit') }}">
                 @csrf
 
-                <!-- Email input is now in the form directly -->
                 <!-- Hidden PIN input -->
                 <input type="hidden" name="pin" id="pinInput">
 

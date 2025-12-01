@@ -1150,6 +1150,145 @@
       height: 100px;
       border-radius: 12px;
       object-fit: cover;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .logo:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+    }
+
+    .logo:active {
+      transform: scale(0.98);
+    }
+
+    /* Sidebar Styles */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      right: -350px;
+      width: 350px;
+      height: 100vh;
+      background: linear-gradient(135deg, #134376 0%, #0F2D5F 100%);
+      box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+      z-index: 9999;
+      transition: right 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      overflow-y: auto;
+      padding: 30px 20px;
+    }
+
+    .sidebar.active {
+      right: 0;
+    }
+
+    .sidebar-close {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 28px;
+      cursor: pointer;
+      float: right;
+      padding: 0;
+      margin: 0;
+      transition: all 0.2s ease;
+    }
+
+    .sidebar-close:hover {
+      transform: rotate(90deg);
+    }
+
+    .sidebar-content {
+      clear: both;
+      margin-top: 40px;
+    }
+
+    .sidebar-header {
+      color: white;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 30px;
+      letter-spacing: -0.3px;
+    }
+
+    .sidebar-menu {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sidebar-menu-item {
+      margin-bottom: 15px;
+    }
+
+    .sidebar-menu-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: rgba(255, 255, 255, 0.9);
+      text-decoration: none;
+      padding: 12px 16px;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+    }
+
+    .sidebar-menu-link:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      transform: translateX(4px);
+    }
+
+    .sidebar-divider {
+      height: 1px;
+      background: rgba(255, 255, 255, 0.2);
+      margin: 20px 0;
+    }
+
+    .sidebar-logout {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #FF6B6B;
+      background: rgba(255, 107, 107, 0.1);
+      padding: 12px 16px;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      width: 100%;
+      text-align: left;
+    }
+
+    .sidebar-logout:hover {
+      background: rgba(255, 107, 107, 0.2);
+      transform: translateX(4px);
+    }
+
+    .sidebar-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0);
+      z-index: 9998;
+      transition: background 0.3s ease;
+      pointer-events: none;
+    }
+
+    .sidebar-overlay.active {
+      background: rgba(0, 0, 0, 0.4);
+      pointer-events: auto;
     }
 
     .brand h1 {
@@ -2048,13 +2187,39 @@
 <body>
   <!-- Header -->
   <header>
-    <img src="{{ asset('logo1.png') }}" alt="CREDOVA Logo" class="logo">
+    <img src="{{ asset('logo1.png') }}" alt="CREDOVA Logo" class="logo" id="logoButton">
     <div class="brand">
       <h1>CREDOVA</h1>
       <div class="tagline">Track. Manage. Grow</div>
     </div>
     <a href="{{ route('faq') }}" class="faq-link">FAQ</a>
   </header>
+
+  <!-- Sidebar Overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- Sidebar Panel -->
+  <div class="sidebar" id="sidebar">
+    <button class="sidebar-close" id="sidebarClose">×</button>
+    <div class="sidebar-content">
+      <div class="sidebar-header">Menu</div>
+      <ul class="sidebar-menu">
+        <li class="sidebar-menu-item">
+          <a href="{{ route('dashboard') }}" class="sidebar-menu-link">📊 Dashboard</a>
+        </li>
+        <li class="sidebar-menu-item">
+          <a href="{{ route('settings') }}" class="sidebar-menu-link">⚙️ Settings</a>
+        </li>
+      </ul>
+      <div class="sidebar-divider"></div>
+      <form id="sidebarLogoutForm" method="POST" action="{{ route('logout') }}" style="display: none;">
+        @csrf
+      </form>
+      <button class="sidebar-logout" onclick="document.getElementById('sidebarLogoutForm').submit();">
+        🚪 Logout
+      </button>
+    </div>
+  </div>
 
   <div class="container">
       <!-- Dashboard Module: Today's Collectible -->
@@ -2446,6 +2611,40 @@
   </div>
 
   <script>
+    // ==================== SIDEBAR TOGGLE ====================
+    const logoButton = document.getElementById('logoButton');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarClose = document.getElementById('sidebarClose');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+    function toggleSidebar() {
+      sidebar.classList.toggle('active');
+      sidebarOverlay.classList.toggle('active');
+    }
+
+    function closeSidebar() {
+      sidebar.classList.remove('active');
+      sidebarOverlay.classList.remove('active');
+    }
+
+    // Event listeners
+    logoButton.addEventListener('click', toggleSidebar);
+    sidebarClose.addEventListener('click', closeSidebar);
+    sidebarOverlay.addEventListener('click', closeSidebar);
+
+    // Close sidebar when clicking on a menu link
+    document.querySelectorAll('.sidebar-menu-link').forEach(link => {
+      link.addEventListener('click', closeSidebar);
+    });
+
+    // Close sidebar on ESC key
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+        closeSidebar();
+      }
+    });
+
+    // ==================== MODAL FUNCTIONS ====================
     // Modal Functions
     function openAddAccountModal() {
       document.getElementById('addAccountModal').style.display = 'block';

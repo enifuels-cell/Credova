@@ -69,101 +69,20 @@ class AuthController extends Controller
             $user = Auth::user();
             $userPin = $user->userPin;
 
-            // If PIN not set yet, redirect to PIN setup
-            if (!$userPin || !$userPin->is_set) {
-                return redirect()->route('setup-pin')->with('success', 'Please set your PIN.');
+            // If user has PIN set, redirect to PIN-only login with email in session
+            if ($userPin && $userPin->is_set) {
+                session(['login_email' => $user->email]);
+                Auth::logout();
+                return redirect()->route('pin-login')->with('success', 'Please enter your PIN to continue.');
             }
 
-            // PIN is set, check if this is a trusted device
-            $deviceFingerprint = DeviceFingerprintService::generate($request);
-            $trustedDevice = TrustedDevice::where('user_id', $user->id)
-                ->where('device_fingerprint', $deviceFingerprint)
-                ->where('is_trusted', true)
-                ->first();
-
-            if ($trustedDevice) {
-                // Device is trusted, go directly to dashboard
-                $trustedDevice->update(['last_used_at' => now()]);
-                return redirect()->intended(route('dashboard'))->with('success', 'Logged in successfully!');
-            }
-
-            // Device not trusted, store user ID in session and go to PIN verification
-            session(['login_user_id' => $user->id]);
-            Auth::logout();
-            return redirect()->route('verify-pin-page');
+            // User doesn't have PIN set, go directly to dashboard
+            return redirect()->intended(route('dashboard'))->with('success', 'Logged in successfully!');
         }
 
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ])->onlyInput('email');
-    }
-
-    /**
-     * Show PIN-only login page
-     */
-    public function showPinLogin()
-    {
-        return view('auth.pin-login');
-    }
-
-    /**
-     * Handle PIN-only login (for users with PIN already set)
-     */
-    public function pinLogin(Request $request)
-    {
-        $validated = $request->validate([
-            'pin' => ['required', 'string', 'regex:/^\d+$/'],
-            'email' => ['required', 'email'],
-            'trust_device' => ['sometimes', 'boolean'],
-        ]);
-
-        // Get user by email
-        $user = User::where('email', $validated['email'])->first();
-
-        if (!$user) {
-            return back()->withErrors(['email' => 'User not found.'])->withInput();
-        }
-
-        $userPin = $user->userPin;
-
-        if (!$userPin || !$userPin->is_set) {
-            return back()->withErrors(['pin' => 'This account does not have a PIN set yet.'])->withInput();
-        }
-
-        if (!Hash::check($validated['pin'], $userPin->pin_hash)) {
-            return back()->withErrors(['pin' => 'Invalid PIN. Please try again.'])->withInput();
-        }
-
-        // PIN is correct, authenticate user
-        Auth::login($user, remember: false);
-        $request->session()->regenerate();
-
-        // Check if should trust this device
-        if ($request->boolean('trust_device')) {
-            $deviceFingerprint = DeviceFingerprintService::generate($request);
-            $deviceInfo = DeviceFingerprintService::getDeviceInfo($request);
-
-            TrustedDevice::updateOrCreate(
-                [
-                    'user_id' => $user->id,
-                    'device_fingerprint' => $deviceFingerprint,
-                ],
-                [
-                    'device_name' => $deviceInfo['browser'] . ' on ' . $deviceInfo['os'],
-                    'device_type' => $deviceInfo['device_type'],
-                    'browser' => $deviceInfo['browser'],
-                    'os' => $deviceInfo['os'],
-                    'ip_address' => $deviceInfo['ip_address'],
-                    'is_trusted' => true,
-                    'trusted_at' => now(),
-                    'last_used_at' => now(),
-                ]
-            );
-
-            return redirect()->route('dashboard')->with('success', 'Logged in successfully! Device trusted.');
-        }
-
-        return redirect()->route('dashboard')->with('success', 'Logged in successfully!');
     }
 
     /**
@@ -283,5 +202,128 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/login')->with('success', 'Logged out successfully!');
+    }
+
+    /**
+     * Show PIN-only login page
+     */
+    public function showPinLogin()
+    {
+        $email = session('login_email');
+        if (!$email) {
+            return redirect()->route('login');
+        }
+
+        return view('auth.pin-login', ['email' => $email]);
+    }
+
+    /**
+     * Handle PIN-only login
+     */
+    public function pinLogin(Request $request)
+    {
+        $email = session('login_email');
+
+        if (!$email) {
+            return redirect()->route('login')->withErrors(['pin' => 'Session expired. Please login again.']);
+        }
+
+        $validated = $request->validate([
+            'pin' => ['required', 'string', 'regex:/^\d+$/', 'min:4', 'max:6'],
+        ]);
+
+        // Find user by email
+        $user = User::where('email', $email)->first();
+
+        if (!$user) {
+            return back()->withErrors(['email' => 'User not found.']);
+        }
+
+        $userPin = $user->userPin;
+
+        if (!$userPin || !$userPin->is_set) {
+            return back()->withErrors(['pin' => 'This account does not have a PIN set.']);
+        }
+
+        if (!Hash::check($validated['pin'], $userPin->pin_hash)) {
+            return back()->withErrors(['pin' => 'Invalid PIN. Please try again.']);
+        }
+
+        // PIN is correct, authenticate user
+        Auth::login($user, remember: false);
+        $request->session()->regenerate();
+        session()->forget('login_email');
+
+        // Check if should trust this device
+        if ($request->boolean('trust_device')) {
+            $deviceFingerprint = DeviceFingerprintService::generate($request);
+            $deviceInfo = DeviceFingerprintService::getDeviceInfo($request);
+
+            TrustedDevice::updateOrCreate(
+                [
+                    'user_id' => $user->id,
+                    'device_fingerprint' => $deviceFingerprint,
+                ],
+                [
+                    'device_name' => $deviceInfo['browser'] . ' on ' . $deviceInfo['os'],
+                    'device_type' => $deviceInfo['device_type'],
+                    'browser' => $deviceInfo['browser'],
+                    'os' => $deviceInfo['os'],
+                    'ip_address' => $deviceInfo['ip_address'],
+                    'is_trusted' => true,
+                    'trusted_at' => now(),
+                    'last_used_at' => now(),
+                ]
+            );
+
+            return redirect()->route('dashboard')->with('success', 'Logged in successfully! Device trusted.');
+        }
+
+        return redirect()->route('dashboard')->with('success', 'Logged in successfully!');
+    }
+
+    /**
+     * Show settings page
+     */
+    public function showSettings()
+    {
+        $user = Auth::user();
+        $userPin = $user->userPin;
+
+        return view('settings', [
+            'userPin' => $userPin,
+        ]);
+    }
+
+    /**
+     * Update PIN in settings
+     */
+    public function updatePin(Request $request)
+    {
+        $user = Auth::user();
+
+        // Verify password first
+        $validated = $request->validate([
+            'current_password' => ['required', 'string'],
+            'pin' => ['required', 'string', 'min:4', 'max:6', 'regex:/^\d+$/'],
+            'pin_confirmation' => ['required', 'same:pin'],
+        ]);
+
+        // Check if password is correct
+        if (!Hash::check($validated['current_password'], $user->password)) {
+            return back()->withErrors(['current_password' => 'The password is incorrect.']);
+        }
+
+        // Update or create PIN
+        UserPin::updateOrCreate(
+            ['user_id' => $user->id],
+            [
+                'pin_hash' => Hash::make($validated['pin']),
+                'is_set' => true,
+                'pin_set_at' => now(),
+            ]
+        );
+
+        return back()->with('success', 'PIN has been successfully updated!');
     }
 }

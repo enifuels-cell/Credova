@@ -312,12 +312,6 @@
                 <span class="signup-text">Don't have an account?</span>
                 <a href="{{ route('register') }}" class="signup-link">REGISTER</a>
             </div>
-
-            <!-- PIN Login Link -->
-            <div class="signup-section" style="margin-top: 12px; border-top: none; padding-top: 0;">
-                <span class="signup-text">Have a PIN?</span>
-                <a href="{{ route('pin-login') }}" class="signup-link">PIN LOGIN</a>
-            </div>
         </div>
     </div>
 </body>
