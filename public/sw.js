@@ -4,8 +4,7 @@ const DYNAMIC_CACHE = 'homygo-dynamic-v1.0.0';
 
 const STATIC_ASSETS = [
     '/',
-    '/css/app.css',
-    '/js/app.js',
+    '/manifest.json',
     '/icons/icon-192x192.png',
     '/icons/icon-512x512.png',
     '/offline.html'
@@ -14,25 +13,28 @@ const STATIC_ASSETS = [
 // Install event - cache static assets
 self.addEventListener('install', event => {
     console.log('Service Worker: Installing...');
-    
+
     event.waitUntil(
         caches.open(STATIC_CACHE)
             .then(cache => {
                 console.log('Service Worker: Caching static assets');
+                // Cache only essential static assets, skip versioned build files
                 return cache.addAll(STATIC_ASSETS);
             })
             .catch(error => {
                 console.error('Service Worker: Failed to cache static assets', error);
+                // Continue even if some assets fail to cache
+                return Promise.resolve();
             })
     );
-    
+
     self.skipWaiting();
 });
 
 // Activate event - clean up old caches
 self.addEventListener('activate', event => {
     console.log('Service Worker: Activating...');
-    
+
     event.waitUntil(
         caches.keys().then(cacheNames => {
             return Promise.all(
@@ -45,24 +47,24 @@ self.addEventListener('activate', event => {
             );
         })
     );
-    
+
     self.clients.claim();
 });
 
 // Fetch event - serve cached content when offline
 self.addEventListener('fetch', event => {
     const { request } = event;
-    
+
     // Skip non-GET requests
     if (request.method !== 'GET') {
         return;
     }
-    
+
     // Skip cross-origin requests
     if (!request.url.startsWith(self.location.origin)) {
         return;
     }
-    
+
     event.respondWith(
         caches.match(request)
             .then(cachedResponse => {
@@ -70,7 +72,7 @@ self.addEventListener('fetch', event => {
                 if (cachedResponse) {
                     return cachedResponse;
                 }
-                
+
                 // Otherwise, fetch from network
                 return fetch(request)
                     .then(response => {
@@ -78,16 +80,16 @@ self.addEventListener('fetch', event => {
                         if (!response || response.status !== 200 || response.type !== 'basic') {
                             return response;
                         }
-                        
+
                         // Clone the response
                         const responseToCache = response.clone();
-                        
+
                         // Cache dynamic content
                         caches.open(DYNAMIC_CACHE)
                             .then(cache => {
                                 cache.put(request, responseToCache);
                             });
-                        
+
                         return response;
                     })
                     .catch(() => {
@@ -95,7 +97,7 @@ self.addEventListener('fetch', event => {
                         if (request.destination === 'document') {
                             return caches.match('/offline.html');
                         }
-                        
+
                         // For images, return a placeholder
                         if (request.destination === 'image') {
                             return new Response(
@@ -111,7 +113,7 @@ self.addEventListener('fetch', event => {
 // Background sync for offline actions
 self.addEventListener('sync', event => {
     console.log('Service Worker: Background sync', event.tag);
-    
+
     if (event.tag === 'background-sync') {
         event.waitUntil(
             // Perform background sync operations
@@ -123,7 +125,7 @@ self.addEventListener('sync', event => {
 // Push notifications
 self.addEventListener('push', event => {
     console.log('Service Worker: Push notification received');
-    
+
     const options = {
         body: event.data ? event.data.text() : 'New notification from Homygo',
         icon: '/icons/icon-192x192.png',
@@ -146,7 +148,7 @@ self.addEventListener('push', event => {
             }
         ]
     };
-    
+
     event.waitUntil(
         self.registration.showNotification('Homygo', options)
     );
@@ -155,9 +157,9 @@ self.addEventListener('push', event => {
 // Notification click handling
 self.addEventListener('notificationclick', event => {
     console.log('Service Worker: Notification click received');
-    
+
     event.notification.close();
-    
+
     if (event.action === 'explore') {
         event.waitUntil(
             clients.openWindow('/')
@@ -170,10 +172,10 @@ async function doBackgroundSync() {
     try {
         // Check for pending bookings, favorites, etc.
         console.log('Service Worker: Performing background sync');
-        
+
         // This could sync offline bookings, favorites, search preferences, etc.
         // Implementation would depend on your specific offline requirements
-        
+
     } catch (error) {
         console.error('Service Worker: Background sync failed', error);
     }
@@ -183,7 +185,7 @@ async function doBackgroundSync() {
 async function cleanupCache() {
     const cache = await caches.open(DYNAMIC_CACHE);
     const keys = await cache.keys();
-    
+
     if (keys.length > 50) { // Keep only 50 dynamic cache entries
         const oldestKeys = keys.slice(0, keys.length - 50);
         await Promise.all(oldestKeys.map(key => cache.delete(key)));
