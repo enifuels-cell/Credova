@@ -5,11 +5,16 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\InquiryController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\BookingController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\Landlord\DashboardController as LandlordDashboardController;
 use App\Http\Controllers\Landlord\PropertyController as LandlordPropertyController;
+use App\Http\Controllers\Landlord\BookingController as LandlordBookingController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\PropertyController as AdminPropertyController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\BookingController as AdminBookingController;
+use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -55,6 +60,17 @@ Route::middleware('auth')->group(function () {
     // My Inquiries (for tenants)
     Route::get('/my-inquiries', [InquiryController::class, 'myInquiries'])->name('inquiries.my');
 
+    // Bookings
+    Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
+    Route::get('/properties/{property}/book', [BookingController::class, 'create'])->name('bookings.create');
+    Route::post('/properties/{property}/book', [BookingController::class, 'store'])->name('bookings.store');
+    Route::get('/bookings/{booking}', [BookingController::class, 'show'])->name('bookings.show');
+    Route::post('/bookings/{booking}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
+
+    // Reviews
+    Route::get('/my-reviews', [ReviewController::class, 'index'])->name('reviews.index');
+    Route::post('/properties/{property}/review', [ReviewController::class, 'store'])->name('reviews.store');
+
     // Dashboard redirect based on role
     Route::get('/dashboard', function () {
         $user = auth()->user();
@@ -88,6 +104,11 @@ Route::middleware(['auth', 'landlord'])->prefix('landlord')->name('landlord.')->
     Route::get('/inquiries', [InquiryController::class, 'landlordInquiries'])->name('inquiries.index');
     Route::put('/inquiries/{inquiry}', [InquiryController::class, 'updateStatus'])->name('inquiries.update');
     Route::patch('/inquiries/{inquiry}/status', [InquiryController::class, 'updateStatus'])->name('inquiries.status');
+
+    // Bookings
+    Route::get('/bookings', [LandlordBookingController::class, 'index'])->name('bookings.index');
+    Route::get('/bookings/{booking}', [LandlordBookingController::class, 'show'])->name('bookings.show');
+    Route::patch('/bookings/{booking}/status', [LandlordBookingController::class, 'updateStatus'])->name('bookings.status');
 });
 
 /*
@@ -116,6 +137,17 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::patch('/users/{user}/role', [AdminUserController::class, 'updateRole'])->name('users.role');
     Route::post('/users/{user}/status', [AdminUserController::class, 'toggleStatus'])->name('users.status');
     Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
+
+    // Bookings Management
+    Route::get('/bookings', [AdminBookingController::class, 'index'])->name('bookings.index');
+    Route::get('/bookings/{booking}', [AdminBookingController::class, 'show'])->name('bookings.show');
+    Route::delete('/bookings/{booking}', [AdminBookingController::class, 'destroy'])->name('bookings.destroy');
+
+    // Reviews Management
+    Route::get('/reviews', [AdminReviewController::class, 'index'])->name('reviews.index');
+    Route::post('/reviews/{review}/approve', [AdminReviewController::class, 'approve'])->name('reviews.approve');
+    Route::post('/reviews/{review}/unapprove', [AdminReviewController::class, 'unapprove'])->name('reviews.unapprove');
+    Route::delete('/reviews/{review}', [AdminReviewController::class, 'destroy'])->name('reviews.destroy');
 });
 
 require __DIR__.'/auth.php';
