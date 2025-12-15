@@ -56,7 +56,7 @@
                                 Move-in Date <span class="text-red-500">*</span>
                             </label>
                             <input type="date" name="start_date" id="start_date" required
-                                value="{{ old('start_date', now()->addDays(7)->format('Y-m-d')) }}"
+                                value="{{ old('start_date', now()->addDays(config('app.booking_min_advance_days', 7))->format('Y-m-d')) }}"
                                 min="{{ now()->format('Y-m-d') }}"
                                 class="w-full border-gray-300 rounded-lg focus:ring-emerald-500 focus:border-emerald-500">
                             @error('start_date')

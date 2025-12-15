@@ -26,9 +26,9 @@ class BookingController extends Controller
 
         // Stats
         $stats = [
-            'pending' => Booking::where('landlord_id', Auth::id())->pending()->count(),
+            'pending' => Booking::where('landlord_id', Auth::id())->where('status', 'pending')->count(),
             'confirmed' => Booking::where('landlord_id', Auth::id())->where('status', 'confirmed')->count(),
-            'active' => Booking::where('landlord_id', Auth::id())->active()->count(),
+            'active' => Booking::where('landlord_id', Auth::id())->where('status', 'active')->count(),
             'completed' => Booking::where('landlord_id', Auth::id())->where('status', 'completed')->count(),
         ];
 
