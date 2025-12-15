@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\InquiryController;
@@ -71,22 +72,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/my-reviews', [ReviewController::class, 'index'])->name('reviews.index');
     Route::post('/properties/{property}/review', [ReviewController::class, 'store'])->name('reviews.store');
 
-    // Dashboard redirect based on role
-    Route::get('/dashboard', function () {
-        $user = auth()->user();
-        if ($user->isAdmin()) {
-            return redirect()->route('admin.dashboard');
-        } elseif ($user->isLandlord()) {
-            return redirect()->route('landlord.dashboard');
-        }
-        // For tenants, show dashboard with latest properties
-        $latestProperties = \App\Models\Property::where('status', 'available')
-            ->latest()
-            ->take(8)
-            ->with(['images', 'propertyType', 'barangay', 'user'])
-            ->get();
-        return view('dashboard', compact('latestProperties'));
-    })->name('dashboard');
+    // Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 
 /*
