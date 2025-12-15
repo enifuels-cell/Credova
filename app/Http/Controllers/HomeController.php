@@ -18,13 +18,13 @@ class HomeController extends Controller
             ->active()
             ->featured()
             ->latest()
-            ->take(6)
+            ->take(4)
             ->get();
 
         $latestProperties = Property::with(['propertyType', 'barangay', 'images'])
             ->active()
             ->latest()
-            ->take(8)
+            ->take(4)
             ->get();
 
         $rentalTypes = PropertyType::active()

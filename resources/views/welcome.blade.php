@@ -285,6 +285,7 @@
     </section>
 
     <!-- Featured Properties Section - Mobile Optimized -->
+    @include('components.featured-properties-section')
 
     <!-- Divider between Featured and Latest Properties -->
     <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
