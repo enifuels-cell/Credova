@@ -33,6 +33,10 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+<<<<<<< HEAD
+=======
+            'user_type' => ['required', 'in:renter,landlord'],
+>>>>>>> 6075dc1d35bc5a883e927973514793602300912f
         ]);
 
         $user = User::create([
@@ -41,6 +45,13 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+<<<<<<< HEAD
+=======
+        // Assign role based on user selection
+        $role = $request->user_type === 'landlord' ? 'landlord' : 'renter';
+        $user->assignRole($role);
+
+>>>>>>> 6075dc1d35bc5a883e927973514793602300912f
         event(new Registered($user));
 
         Auth::login($user);

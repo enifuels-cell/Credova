@@ -1,0 +1,59 @@
+# HomyGO Laravel Application - Emergency Hotfix Configuration
+services:
+- type: web
+  name: HomyGO-2025
+  repo: https://github.com/Homygo25/HomyGO-2025
+  plan: free
+  region: oregon
+  buildCommand: |
+    # Install dependencies
+    composer install --no-dev --optimize-autoloader --no-interaction
+    npm ci
+    npm run build
+    
+    # Setup storage directories
+    mkdir -p storage/framework/{cache,sessions,views}
+    mkdir -p storage/logs
+    mkdir -p bootstrap/cache
+    
+    # Set permissions
+    chmod -R 775 storage
+    chmod -R 775 bootstrap/cache
+    
+    # Database setup
+    php artisan migrate --force --no-interaction
+    
+  startCommand: php artisan serve --host=0.0.0.0 --port=$PORT --no-reload
+  
+  envVars:
+  - key: APP_NAME
+    value: HomyGo
+  - key: APP_ENV
+    value: production
+  - key: APP_DEBUG
+    value: true
+  - key: APP_KEY
+    value: base64:TtnljvZvTe5cQwUqZzeSjD4VWNi/JUSucZfGd2xEIho=
+  - key: APP_URL
+    value: https://homygo.info
+  - key: DB_CONNECTION
+    value: pgsql
+  - key: LOG_CHANNEL
+    value: stderr
+  - key: LOG_LEVEL
+    value: debug
+  - key: CACHE_DRIVER
+    value: array
+  - key: SESSION_DRIVER
+    value: file
+  - key: QUEUE_CONNECTION
+    value: sync
+  - key: MAIL_MAILER
+    value: log
+  - key: BROADCAST_DRIVER
+    value: log
+
+databases:
+- name: homygo-postgres
+  databaseName: homygo
+  user: homygo_user

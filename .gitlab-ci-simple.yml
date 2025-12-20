@@ -1,0 +1,51 @@
+# GitLab CI/CD Pipeline for HomyGo - Simple Version
+image: php:8.2-cli
+
+variables:
+  COMPOSER_CACHE_DIR: "$CI_PROJECT_DIR/.composer-cache"
+
+stages:
+  - build
+  - deploy
+
+cache:
+  key: composer-cache
+  paths:
+    - .composer-cache/
+    - vendor/
+
+before_script:
+  - apt-get update -qq && apt-get install -y -qq git curl unzip libpq-dev
+  - docker-php-ext-install pdo_pgsql
+  - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+build:
+  stage: build
+  script:
+    - echo "Building HomyGo application..."
+    - composer install --no-dev --optimize-autoloader --no-interaction
+    - cp routes/emergency.php routes/web.php
+    - echo "Build completed successfully!"
+  artifacts:
+    paths:
+      - vendor/
+      - routes/web.php
+    expire_in: 1 hour
+  only:
+    - main
+
+deploy_info:
+  stage: deploy
+  script:
+    - echo "HomyGo deployment information:"
+    - echo "GitHub Repository: https://github.com/Homygo25/HomyGO-2025.git"
+    - echo "GitLab Repository: https://gitlab.com/homygo25-group/HomyGO-2025.git"
+    - echo "Deployment Target: Render.com (Docker)"
+    - echo "Use Dockerfile.simple for deployment"
+    - echo "Emergency routes configured"
+  environment:
+    name: production
+    url: https://homygo.info
+  only:
+    - main
+  when: manual

@@ -47,7 +47,11 @@ return [
     |
     */
 
+<<<<<<< HEAD
     'encrypt' => env('SESSION_ENCRYPT', false),
+=======
+    'encrypt' => env('SESSION_ENCRYPT', true),
+>>>>>>> 6075dc1d35bc5a883e927973514793602300912f
 
     /*
     |--------------------------------------------------------------------------
@@ -129,7 +133,11 @@ return [
 
     'cookie' => env(
         'SESSION_COOKIE',
+<<<<<<< HEAD
         Str::slug((string) env('APP_NAME', 'laravel')).'-session'
+=======
+        Str::snake((string) env('APP_NAME', 'laravel')).'_session'
+>>>>>>> 6075dc1d35bc5a883e927973514793602300912f
     ),
 
     /*
@@ -152,7 +160,11 @@ return [
     |
     | This value determines the domain and subdomains the session cookie is
     | available to. By default, the cookie will be available to the root
+<<<<<<< HEAD
     | domain without subdomains. Typically, this shouldn't be changed.
+=======
+    | domain and all subdomains. Typically, this shouldn't be changed.
+>>>>>>> 6075dc1d35bc5a883e927973514793602300912f
     |
     */
 
@@ -169,7 +181,11 @@ return [
     |
     */
 
+<<<<<<< HEAD
     'secure' => env('SESSION_SECURE_COOKIE'),
+=======
+    'secure' => env('SESSION_SECURE_COOKIE', true),
+>>>>>>> 6075dc1d35bc5a883e927973514793602300912f
 
     /*
     |--------------------------------------------------------------------------
@@ -199,7 +215,11 @@ return [
     |
     */
 
+<<<<<<< HEAD
     'same_site' => env('SESSION_SAME_SITE', 'lax'),
+=======
+    'same_site' => env('SESSION_SAME_SITE', 'strict'),
+>>>>>>> 6075dc1d35bc5a883e927973514793602300912f
 
     /*
     |--------------------------------------------------------------------------

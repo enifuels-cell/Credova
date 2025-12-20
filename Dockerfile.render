@@ -1,0 +1,67 @@
+FROM php:8.2-cli
+
+# Install system dependencies and netcat to avoid entrypoint issues
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    libpq-dev \
+    zip \
+    unzip \
+    netcat-traditional \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install PHP extensions
+RUN docker-php-ext-install pdo_pgsql pgsql mbstring exif pcntl bcmath gd
+
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Set working directory
+WORKDIR /app
+
+# Copy application files
+COPY . .
+
+# Install dependencies
+RUN composer install --no-dev --optimize-autoloader
+
+# Copy emergency routes
+RUN cp routes/emergency.php routes/web.php
+
+# Create basic .env file
+RUN echo "APP_NAME=HomyGo" > .env && \
+    echo "APP_ENV=production" >> .env && \
+    echo "APP_DEBUG=true" >> .env && \
+    echo "APP_URL=https://homygo.info" >> .env && \
+    echo "LOG_CHANNEL=stderr" >> .env && \
+    echo "LOG_LEVEL=debug" >> .env && \
+    echo "DB_CONNECTION=pgsql" >> .env && \
+    echo "CACHE_DRIVER=array" >> .env && \
+    echo "SESSION_DRIVER=file" >> .env && \
+    echo "SESSION_LIFETIME=120" >> .env && \
+    echo "QUEUE_CONNECTION=sync" >> .env
+
+# Generate application key
+RUN php artisan key:generate --force
+
+# Clear caches
+RUN php artisan config:clear || true
+RUN php artisan route:clear || true
+RUN php artisan view:clear || true
+RUN php artisan cache:clear || true
+
+# Create a custom entrypoint that skips database checks
+RUN echo '#!/bin/bash' > /custom-entrypoint.sh && \
+    echo 'echo "HomyGo starting - skipping database checks"' >> /custom-entrypoint.sh && \
+    echo 'echo "Starting PHP server on port $PORT"' >> /custom-entrypoint.sh && \
+    echo 'exec php -S 0.0.0.0:$PORT -t public/' >> /custom-entrypoint.sh && \
+    chmod +x /custom-entrypoint.sh
+
+# Expose port
+EXPOSE $PORT
+
+# Use our custom entrypoint
+ENTRYPOINT ["/custom-entrypoint.sh"]

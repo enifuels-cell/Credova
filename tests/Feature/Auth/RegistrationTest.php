@@ -18,6 +18,12 @@ class RegistrationTest extends TestCase
 
     public function test_new_users_can_register(): void
     {
+<<<<<<< HEAD
+=======
+        // Seed roles before testing registration
+        $this->artisan('db:seed', ['--class' => 'RoleSeeder']);
+        
+>>>>>>> 6075dc1d35bc5a883e927973514793602300912f
         $response = $this->post('/register', [
             'name' => 'Test User',
             'email' => 'test@example.com',

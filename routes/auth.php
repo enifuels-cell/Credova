@@ -15,18 +15,33 @@ Route::middleware('guest')->group(function () {
     Route::get('register', [RegisteredUserController::class, 'create'])
         ->name('register');
 
+<<<<<<< HEAD
     Route::post('register', [RegisteredUserController::class, 'store']);
+=======
+    Route::post('register', [RegisteredUserController::class, 'store'])
+        ->middleware('throttle:3,1'); // 3 registration attempts per minute
+>>>>>>> 6075dc1d35bc5a883e927973514793602300912f
 
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
         ->name('login');
 
+<<<<<<< HEAD
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
+=======
+    Route::post('login', [AuthenticatedSessionController::class, 'store'])
+        ->middleware('throttle:5,1'); // 5 login attempts per minute
+>>>>>>> 6075dc1d35bc5a883e927973514793602300912f
 
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
         ->name('password.request');
 
     Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
+<<<<<<< HEAD
         ->name('password.email');
+=======
+        ->name('password.email')
+        ->middleware('throttle:3,10'); // 3 password reset requests per 10 minutes
+>>>>>>> 6075dc1d35bc5a883e927973514793602300912f
 
     Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
         ->name('password.reset');

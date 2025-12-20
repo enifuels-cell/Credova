@@ -1,0 +1,51 @@
+FROM php:8.2-cli
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    libpq-dev \
+    zip \
+    unzip
+
+# Install PHP extensions
+RUN docker-php-ext-install pdo_pgsql pgsql mbstring exif pcntl bcmath gd
+
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Set working directory
+WORKDIR /app
+
+# Copy application files
+COPY . .
+
+# Install dependencies
+RUN composer install --no-dev --optimize-autoloader
+
+# Copy emergency routes
+RUN cp routes/emergency.php routes/web.php
+
+# Generate application key
+RUN php artisan key:generate --force
+
+# Clear caches
+RUN php artisan config:clear || true
+RUN php artisan route:clear || true
+RUN php artisan view:clear || true
+RUN php artisan cache:clear || true
+
+# Create startup script
+RUN echo '#!/bin/bash' > /start.sh && \
+    echo 'echo "Starting HomyGo on port $PORT"' >> /start.sh && \
+    echo 'php -S 0.0.0.0:$PORT -t public/' >> /start.sh && \
+    chmod +x /start.sh
+
+# Expose port
+EXPOSE $PORT
+
+# Start PHP built-in server
+CMD ["/start.sh"]

@@ -1,0 +1,46 @@
+services:
+  - type: web
+    name: homygo-simple
+    env: node
+    plan: starter
+    repo: https://github.com/Fikadu5/homygo.git
+    branch: main
+    buildCommand: chmod +x build-simple.sh && ./build-simple.sh
+    startCommand: php -S 0.0.0.0:$PORT -t public/
+    envVars:
+      - key: PORT
+        value: "10000"
+      - key: APP_NAME
+        value: HomyGo
+      - key: APP_ENV
+        value: production
+      - key: APP_KEY
+        generateValue: true
+      - key: APP_DEBUG
+        value: "true"
+      - key: APP_URL
+        value: https://homygo.info
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: LOG_LEVEL
+        value: debug
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_HOST
+        value: dpg-d2b2uds9c44c7388blq0-a
+      - key: DB_PORT
+        value: "5432"
+      - key: DB_DATABASE
+        value: homygo
+      - key: DB_USERNAME
+        value: homygo_user
+      - key: DB_PASSWORD
+        value: YOUR_DB_PASSWORD_HERE
+      - key: CACHE_DRIVER
+        value: array
+      - key: SESSION_DRIVER
+        value: file
+      - key: SESSION_LIFETIME
+        value: "120"
+      - key: QUEUE_CONNECTION
+        value: sync
