@@ -1,3 +1,30 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Custom grid for featured properties */
+.properties-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem;
+}
+
+@media (max-width: 640px) {
+  .properties-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+}
+
+
+/* Hide scrollbar utility for horizontal scroll sections */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+

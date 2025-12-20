@@ -153,53 +153,37 @@
                 </div>
 
                 <!-- Properties -->
+
+
 @if($properties->count() > 0)
-    <div class="properties-grid">
+    <div class="w-full flex flex-row flex-wrap gap-6 justify-start items-stretch">
         @foreach($properties as $property)
-            @include('components.property-card', ['property' => $property])
+            <div class="max-w-xs flex-1">
+                @include('components.property-card', ['property' => $property])
+            </div>
         @endforeach
     </div>
-
     <!-- Pagination -->
     <div class="mt-6 sm:mt-8">
         {{ $properties->links() }}
     </div>
 @else
-
-
-                    <!-- Properties -->
-                    @if($properties->count() > 0)
-                        <div class="properties-grid">
-                            @foreach($properties as $property)
-                                @include('components.property-card', ['property' => $property])
-                            @endforeach
-                        </div>
-
-                        <!-- Pagination -->
-                        <div class="mt-6 sm:mt-8">
-                            {{ $properties->links() }}
-                        </div>
-                    @else
-                        <div class="bg-white rounded-xl sm:rounded-2xl shadow-md p-8 sm:p-12 text-center">
-                            <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                                <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                </svg>
-                            </div>
-                            <h3 class="text-lg sm:text-xl font-semibold text-gray-800 mb-2">No Properties Found</h3>
-                            <p class="text-gray-600 mb-6 text-sm sm:text-base">Try adjusting your filters or search criteria.</p>
-                            <a href="{{ route('properties.index') }}" class="inline-flex items-center text-emerald-600 hover:text-emerald-700 font-semibold text-base touch-target">
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                                </svg>
-                                Clear all filters
-                            </a>
-                        </div>
-                    @endif
-                </div>
-            </div>
+    <div class="bg-white rounded-xl sm:rounded-2xl shadow-md p-8 sm:p-12 text-center">
+        <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
         </div>
+        <h3 class="text-lg sm:text-xl font-semibold text-gray-800 mb-2">No Properties Found</h3>
+        <p class="text-gray-600 mb-6 text-sm sm:text-base">Try adjusting your filters or search criteria.</p>
+        <a href="{{ route('properties.index') }}" class="inline-flex items-center text-emerald-600 hover:text-emerald-700 font-semibold text-base touch-target">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+            </svg>
+            Clear all filters
+        </a>
     </div>
+@endif
 
     @push('scripts')
     <script>
