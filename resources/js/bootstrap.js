@@ -1,9 +1,7 @@
+
 import axios from 'axios';
 window.axios = axios;
-
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-<<<<<<< HEAD
-=======
 
 // Configure base URL for API calls to ensure HTTPS
 const baseURL = window.location.protocol + '//' + window.location.host;
@@ -28,4 +26,3 @@ window.axios.interceptors.response.use(
         return Promise.reject(error);
     }
 );
->>>>>>> 6075dc1d35bc5a883e927973514793602300912f

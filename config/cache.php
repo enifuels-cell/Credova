@@ -15,11 +15,7 @@ return [
     |
     */
 
-<<<<<<< HEAD
-    'default' => env('CACHE_STORE', 'database'),
-=======
-    'default' => env('CACHE_DRIVER', env('CACHE_STORE', 'array')),
->>>>>>> 6075dc1d35bc5a883e927973514793602300912f
+    'default' => env('CACHE_DRIVER', env('CACHE_STORE', 'database')),
 
     /*
     |--------------------------------------------------------------------------
@@ -31,12 +27,7 @@ return [
     | same cache driver to group types of items stored in your caches.
     |
     | Supported drivers: "array", "database", "file", "memcached",
-<<<<<<< HEAD
-    |                    "redis", "dynamodb", "octane",
-    |                    "failover", "null"
-=======
-    |                    "redis", "dynamodb", "octane", "null"
->>>>>>> 6075dc1d35bc5a883e927973514793602300912f
+    |                    "redis", "dynamodb", "octane", "failover", "null"
     |
     */
 
@@ -99,7 +90,6 @@ return [
             'driver' => 'octane',
         ],
 
-<<<<<<< HEAD
         'failover' => [
             'driver' => 'failover',
             'stores' => [
@@ -107,9 +97,6 @@ return [
                 'array',
             ],
         ],
-
-=======
->>>>>>> 6075dc1d35bc5a883e927973514793602300912f
     ],
 
     /*

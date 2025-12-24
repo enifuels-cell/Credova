@@ -3,60 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Property;
-<<<<<<< HEAD
-use App\Models\PropertyType;
-use App\Models\Barangay;
-use App\Models\Amenity;
-use Illuminate\Http\Request;
-=======
-use App\Models\PropertyImage;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\DB;
->>>>>>> 6075dc1d35bc5a883e927973514793602300912f
 
 class PropertyController extends Controller
 {
     /**
-<<<<<<< HEAD
-     * Display property listing with search/filter
-     */
-    public function index(Request $request)
-    {
-        $query = Property::with(['propertyType', 'barangay', 'images', 'landlord'])
-            ->active();
-
-        // Search by keyword
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('title', 'like', "%{$search}%")
-                    ->orWhere('description', 'like', "%{$search}%")
-                    ->orWhere('address', 'like', "%{$search}%");
-            });
-        }
-
-        // Filter by property type
-        if ($request->filled('property_type')) {
-            $query->where('property_type_id', $request->property_type);
-        }
-
-        // Filter by barangay
-        if ($request->filled('barangay')) {
-            $query->where('barangay_id', $request->barangay);
-        }
-
-        // Filter by price range
-        if ($request->filled('min_price')) {
-            $query->where('price', '>=', $request->min_price);
-        }
-        if ($request->filled('max_price')) {
-            $query->where('price', '<=', $request->max_price);
-        }
-
-        // Filter by bedrooms
-=======
      * Display a listing of properties
      */
     public function index(Request $request)
@@ -91,43 +41,21 @@ class PropertyController extends Controller
             $query->hasAmenities($amenities);
         }
 
->>>>>>> 6075dc1d35bc5a883e927973514793602300912f
         if ($request->filled('bedrooms')) {
             $query->where('bedrooms', '>=', $request->bedrooms);
         }
-
-<<<<<<< HEAD
-        // Filter by bathrooms
-=======
->>>>>>> 6075dc1d35bc5a883e927973514793602300912f
         if ($request->filled('bathrooms')) {
             $query->where('bathrooms', '>=', $request->bathrooms);
         }
-
-<<<<<<< HEAD
-        // Filter by furnished
         if ($request->filled('furnished')) {
             $query->where('is_furnished', $request->furnished == '1');
         }
-
-        // Filter by pets allowed
         if ($request->filled('pets_allowed')) {
             $query->where('pets_allowed', $request->pets_allowed == '1');
         }
-
-        // Filter by parking
         if ($request->filled('parking')) {
             $query->where('parking_available', $request->parking == '1');
         }
-
-        // Filter by amenities
-        if ($request->filled('amenities')) {
-            $amenityIds = $request->amenities;
-            $query->whereHas('amenities', function ($q) use ($amenityIds) {
-                $q->whereIn('amenities.id', $amenityIds);
-            });
-        }
-
         // Sorting
         switch ($request->get('sort', 'latest')) {
             case 'price_low':
@@ -143,12 +71,10 @@ class PropertyController extends Controller
                 $query->latest();
                 break;
         }
-
         $properties = $query->paginate(12)->withQueryString();
         $propertyTypes = PropertyType::active()->get();
         $barangays = Barangay::active()->orderBy('name')->get();
         $amenities = Amenity::active()->get();
-
         return view('properties.index', compact(
             'properties',
             'propertyTypes',
@@ -221,7 +147,6 @@ class PropertyController extends Controller
             ->paginate(12);
 
         return view('properties.by-barangay', compact('properties', 'barangay'));
-=======
         if ($request->filled('max_guests')) {
             $query->where('max_guests', '>=', $request->max_guests);
         }
@@ -331,22 +256,6 @@ class PropertyController extends Controller
     /**
      * Display the specified property
      */
-    public function show(Property $property)
-    {
-        $property->load(['user', 'images', 'bookings' => function($query) {
-            $query->confirmed()->future();
-        }]);
-        
-        $relatedProperties = Property::with(['user', 'primaryImage'])
-            ->active()
-            ->where('id', '!=', $property->id)
-            ->where('property_type', $property->property_type)
-            ->orWhere('location', 'LIKE', '%' . explode(',', $property->location)[0] . '%')
-            ->limit(6)
-            ->get();
-        
-        return view('properties.show', compact('property', 'relatedProperties'));
-    }
 
     /**
      * Show the form for editing the property
@@ -600,6 +509,5 @@ class PropertyController extends Controller
     {
         $properties = Auth::user()->properties()->with('primaryImage')->latest()->paginate(12);
         return view('properties.owner-index', compact('properties'));
->>>>>>> 6075dc1d35bc5a883e927973514793602300912f
     }
 }

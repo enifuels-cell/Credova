@@ -1,9 +1,5 @@
 {
-<<<<<<< HEAD
-    "$schema": "https://www.schemastore.org/package.json",
-=======
     "$schema": "https://json.schemastore.org/package.json",
->>>>>>> 6075dc1d35bc5a883e927973514793602300912f
     "private": true,
     "type": "module",
     "scripts": {
@@ -15,15 +11,6 @@
         "@tailwindcss/vite": "^4.0.0",
         "alpinejs": "^3.4.2",
         "autoprefixer": "^10.4.2",
-<<<<<<< HEAD
-        "axios": "^1.11.0",
-        "concurrently": "^9.0.1",
-        "laravel-vite-plugin": "^2.0.0",
-        "postcss": "^8.4.31",
-        "tailwindcss": "^3.1.0",
-        "vite": "^7.0.7"
-    }
-=======
         "axios": "^1.8.2",
         "concurrently": "^9.0.1",
         "laravel-vite-plugin": "^2.0.0",
@@ -201,5 +188,4 @@
         "url": "https://github.com/Homygo25/HomyGO-2025/issues"
     },
     "homepage": "https://github.com/Homygo25/HomyGO-2025#readme"
->>>>>>> 6075dc1d35bc5a883e927973514793602300912f
 }

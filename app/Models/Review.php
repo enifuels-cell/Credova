@@ -2,34 +2,6 @@
 
 namespace App\Models;
 
-<<<<<<< HEAD
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
-class Review extends Model
-{
-    use HasFactory;
-
-    protected $fillable = [
-        'property_id',
-        'user_id',
-        'booking_id',
-        'rating',
-        'comment',
-        'is_approved',
-    ];
-
-    protected function casts(): array
-    {
-        return [
-            'is_approved' => 'boolean',
-        ];
-    }
-
-    /**
-     * Get the property
-=======
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -71,7 +43,6 @@ class Review extends Model
 
     /**
      * Get the property that owns the review
->>>>>>> 6075dc1d35bc5a883e927973514793602300912f
      */
     public function property(): BelongsTo
     {
@@ -79,19 +50,7 @@ class Review extends Model
     }
 
     /**
-<<<<<<< HEAD
-     * Get the reviewer
-     */
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    /**
-     * Get the booking
-=======
      * Get the booking that owns the review
->>>>>>> 6075dc1d35bc5a883e927973514793602300912f
      */
     public function booking(): BelongsTo
     {
@@ -99,13 +58,6 @@ class Review extends Model
     }
 
     /**
-<<<<<<< HEAD
-     * Scope for approved reviews
-     */
-    public function scopeApproved($query)
-    {
-        return $query->where('is_approved', true);
-=======
      * Get the guest who wrote the review
      */
     public function guest(): BelongsTo
@@ -184,7 +136,3 @@ class Review extends Model
      */
     public function scopeRecent($query, int $days = 30)
     {
-        return $query->where('created_at', '>=', now()->subDays($days));
->>>>>>> 6075dc1d35bc5a883e927973514793602300912f
-    }
-}

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-<<<<<<< HEAD
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,6 +15,11 @@ class Property extends Model
 {
     use HasFactory, SoftDeletes;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<string>
+     */
     protected $fillable = [
         'user_id',
         'property_type_id',
@@ -46,83 +51,46 @@ class Property extends Model
         'longitude',
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'price' => 'decimal:2',
-            'deposit' => 'decimal:2',
-            'advance' => 'decimal:2',
-            'floor_area' => 'decimal:2',
-            'lot_area' => 'decimal:2',
-            'is_furnished' => 'boolean',
-            'pets_allowed' => 'boolean',
-            'parking_available' => 'boolean',
-            'is_featured' => 'boolean',
-            'available_from' => 'date',
-            'latitude' => 'decimal:8',
-            'longitude' => 'decimal:8',
-        ];
-    }
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'price' => 'decimal:2',
+        'deposit' => 'decimal:2',
+        'advance' => 'decimal:2',
+        'floor_area' => 'decimal:2',
+        'lot_area' => 'decimal:2',
+        'is_furnished' => 'boolean',
+        'pets_allowed' => 'boolean',
+        'parking_available' => 'boolean',
+        'is_featured' => 'boolean',
+        'available_from' => 'date:Y-m-d',
+        'latitude' => 'decimal:8',
+        'longitude' => 'decimal:8',
+    ];
 
-    protected static function boot()
+    /**
+     * Boot the model.
+     */
+    protected static function boot(): void
     {
         parent::boot();
 
-        static::creating(function ($property) {
+        static::creating(function (self $property) {
             if (empty($property->slug)) {
-                $property->slug = Str::slug($property->title) . '-' . uniqid();
+                $property->slug = Str::slug($property->title) . '-' . Str::random(8);
             }
         });
     }
 
-    /**
-     * Get the landlord (owner) of the property
-=======
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Builder;
-
-class Property extends Model
-{
-    protected $fillable = [
-        'user_id',
-        'title',
-        'description',
-        'location',
-        'price_per_night',
-        'image',
-        'bedrooms',
-        'bathrooms',
-        'max_guests',
-        'property_type',
-        'amenities',
-        'house_rules',
-        'check_in_time',
-        'check_out_time',
-        'cancellation_policy',
-        'instant_book',
-        'featured',
-        'is_active',
-        'lat',
-        'lng'
-    ];
-
-    protected $casts = [
-        'price_per_night' => 'decimal:2',
-        'amenities' => 'array',
-        'instant_book' => 'boolean',
-        'featured' => 'boolean',
-        'is_active' => 'boolean',
-        'lat' => 'decimal:8',
-        'lng' => 'decimal:8',
-        'check_in_time' => 'datetime:H:i',
-        'check_out_time' => 'datetime:H:i',
-    ];
+    // ========================
+    // Relationships
+    // ========================
 
     /**
-     * Get the user that owns the property
->>>>>>> 6075dc1d35bc5a883e927973514793602300912f
+     * The user (landlord) who owns this property.
      */
     public function user(): BelongsTo
     {
@@ -130,8 +98,7 @@ class Property extends Model
     }
 
     /**
-<<<<<<< HEAD
-     * Alias for user relationship
+     * Alias for user relationship (more semantic for landlord context).
      */
     public function landlord(): BelongsTo
     {
@@ -139,7 +106,7 @@ class Property extends Model
     }
 
     /**
-     * Get the property type
+     * The type of property (e.g., Apartment, House).
      */
     public function propertyType(): BelongsTo
     {
@@ -147,7 +114,7 @@ class Property extends Model
     }
 
     /**
-     * Get the barangay
+     * The barangay where the property is located.
      */
     public function barangay(): BelongsTo
     {
@@ -155,7 +122,7 @@ class Property extends Model
     }
 
     /**
-     * Get property images
+     * Property images, ordered by sort order.
      */
     public function images(): HasMany
     {
@@ -163,24 +130,16 @@ class Property extends Model
     }
 
     /**
-     * Get primary image
-     */
-    public function primaryImage()
-    {
-        return $this->hasOne(PropertyImage::class)->where('is_primary', true);
-    }
-
-    /**
-     * Get amenities
+     * The primary image of the property.
+     * Amenities associated with the property.
      */
     public function amenities(): BelongsToMany
     {
-        return $this->belongsToMany(Amenity::class, 'property_amenity')
-            ->withTimestamps();
+        return $this->belongsToMany(Amenity::class, 'property_amenity')->withTimestamps();
     }
 
     /**
-     * Get inquiries
+     * Inquiries made about this property.
      */
     public function inquiries(): HasMany
     {
@@ -188,10 +147,7 @@ class Property extends Model
     }
 
     /**
-     * Get bookings
-=======
-     * Get the bookings for the property
->>>>>>> 6075dc1d35bc5a883e927973514793602300912f
+     * Bookings for this property.
      */
     public function bookings(): HasMany
     {
@@ -199,19 +155,7 @@ class Property extends Model
     }
 
     /**
-<<<<<<< HEAD
-     * Get reviews
-=======
-     * Get the images for the property
-     */
-    public function images(): HasMany
-    {
-        return $this->hasMany(PropertyImage::class)->orderBy('sort_order');
-    }
-
-    /**
-     * Get the reviews for the property
->>>>>>> 6075dc1d35bc5a883e927973514793602300912f
+     * Reviews for this property.
      */
     public function reviews(): HasMany
     {
@@ -219,201 +163,99 @@ class Property extends Model
     }
 
     /**
-<<<<<<< HEAD
-     * Get favorites
+     * Favorites (users who saved this property).
      */
     public function favorites(): HasMany
     {
         return $this->hasMany(Favorite::class);
     }
 
+    // ========================
+    // Accessors & Mutators
+    // ========================
+
     /**
-     * Get average rating
+     * Get the average rating from approved reviews.
      */
-    public function getAverageRatingAttribute()
+    public function getAverageRatingAttribute(): float
     {
-        return $this->reviews()->where('is_approved', true)->avg('rating') ?? 0;
+        return round($this->reviews()->where('is_approved', true)->avg('rating') ?? 0, 1);
     }
 
     /**
-     * Get review count
+     * Get the count of approved reviews.
      */
-    public function getReviewCountAttribute()
+    public function getReviewCountAttribute(): int
     {
         return $this->reviews()->where('is_approved', true)->count();
     }
 
     /**
-     * Format price in Philippine Peso
+     * Get the formatted price in Philippine Peso.
      */
-    public function getFormattedPriceAttribute()
+    public function getFormattedPriceAttribute(): string
     {
         return '₱' . number_format($this->price, 2);
     }
 
+    // ========================
+    // Scopes
+    // ========================
+
     /**
-     * Scope for active properties
+     * Scope: Only active properties.
      */
-    public function scopeActive($query)
+    public function scopeActive(Builder $query): Builder
     {
         return $query->where('status', 'active');
     }
 
     /**
-     * Scope for featured properties
+     * Scope: Only featured properties.
      */
-    public function scopeFeatured($query)
+    public function scopeFeatured(Builder $query): Builder
     {
         return $query->where('is_featured', true);
     }
 
     /**
-     * Scope for available properties
+     * Scope: Properties that are currently available (active status).
      */
-    public function scopeAvailable($query)
+    public function scopeAvailable(Builder $query): Builder
     {
-        return $query->whereIn('status', ['active']);
+        return $query->where('status', 'active');
     }
 
+    // ========================
+    // Helper Methods
+    // ========================
+
     /**
-     * Increment view count
+     * Increment the view count for this property.
      */
-    public function incrementViews()
+    public function incrementViews(): void
     {
         $this->increment('views_count');
-=======
-     * Get the primary image for the property
-     */
-    public function primaryImage()
-    {
-        return $this->hasOne(PropertyImage::class)->where('is_primary', true);
     }
 
     /**
-     * Scope a query to only include active properties.
+     * Check if the property is available between given dates.
+     *
+     * @param  string  $startDate  Y-m-d format
+     * @param  string  $endDate    Y-m-d format
      */
-    public function scopeActive(Builder $query): void
+    public function isAvailable(string $startDate, string $endDate): bool
     {
-        $query->where('is_active', true);
-    }
-
-    /**
-     * Scope a query to only include featured properties.
-     */
-    public function scopeFeatured(Builder $query): void
-    {
-        $query->where('featured', true);
-    }
-
-    /**
-     * Scope a query to filter by property type.
-     */
-    public function scopeOfType(Builder $query, string $type): void
-    {
-        $query->where('property_type', $type);
-    }
-
-    /**
-     * Scope a query to filter by price range.
-     */
-    public function scopePriceRange(Builder $query, float $min, float $max): void
-    {
-        $query->whereBetween('price_per_night', [$min, $max]);
-    }
-
-    /**
-     * Scope a query to filter by location.
-     */
-    public function scopeLocation(Builder $query, string $location): void
-    {
-        $query->where('location', 'LIKE', "%{$location}%");
-    }
-
-    /**
-     * Scope a query to filter by amenities.
-     */
-    public function scopeHasAmenities(Builder $query, array $amenities): void
-    {
-        foreach ($amenities as $amenity) {
-            $query->whereJsonContains('amenities', $amenity);
-        }
-    }
-
-    /**
-     * Get available amenities list
-     */
-    public static function getAvailableAmenities(): array
-    {
-        return [
-            'wifi' => 'Wi-Fi',
-            'kitchen' => 'Kitchen',
-            'washer' => 'Washer',
-            'dryer' => 'Dryer',
-            'air_conditioning' => 'Air Conditioning',
-            'heating' => 'Heating',
-            'pool' => 'Pool',
-            'hot_tub' => 'Hot Tub',
-            'parking' => 'Free Parking',
-            'gym' => 'Gym',
-            'tv' => 'TV',
-            'workspace' => 'Dedicated Workspace',
-            'smoking_allowed' => 'Smoking Allowed',
-            'pets_allowed' => 'Pets Allowed',
-            'events_allowed' => 'Events Allowed',
-            'breakfast' => 'Breakfast',
-            'laptop_friendly' => 'Laptop Friendly Workspace',
-            'hair_dryer' => 'Hair Dryer',
-            'iron' => 'Iron',
-            'security_cameras' => 'Security Cameras',
-            'first_aid_kit' => 'First Aid Kit',
-            'fire_extinguisher' => 'Fire Extinguisher',
-            'essentials' => 'Essentials (towels, bed sheets, soap, toilet paper)',
-        ];
-    }
-
-    /**
-     * Get property types list
-     */
-    public static function getPropertyTypes(): array
-    {
-        return [
-            'apartment' => 'Apartment',
-            'house' => 'House',
-            'villa' => 'Villa',
-            'condo' => 'Condo',
-            'studio' => 'Studio',
-            'loft' => 'Loft',
-        ];
-    }
-
-    /**
-     * Get cancellation policies list
-     */
-    public static function getCancellationPolicies(): array
-    {
-        return [
-            'flexible' => 'Flexible - Free cancellation up to 24 hours before check-in',
-            'moderate' => 'Moderate - Free cancellation up to 5 days before check-in',
-            'strict' => 'Strict - Free cancellation up to 30 days before check-in',
-        ];
-    }
-
-    /**
-     * Check if property is available for given dates
-     */
-    public function isAvailable($startDate, $endDate): bool
-    {
-        return !$this->bookings()
+        return ! $this->bookings()
             ->where('status', 'confirmed')
-            ->where(function ($query) use ($startDate, $endDate) {
+            ->where(function (Builder $query) use ($startDate, $endDate) {
                 $query->whereBetween('start_date', [$startDate, $endDate])
-                    ->orWhereBetween('end_date', [$startDate, $endDate])
-                    ->orWhere(function ($query) use ($startDate, $endDate) {
-                        $query->where('start_date', '<=', $startDate)
-                            ->where('end_date', '>=', $endDate);
-                    });
+                      ->orWhereBetween('end_date', [$startDate, $endDate])
+                      ->orWhere(function (Builder $query) use ($startDate, $endDate) {
+                          $query->where('start_date', '<=', $startDate)
+                                ->where('end_date', '>=', $endDate);
+                      });
             })
             ->exists();
->>>>>>> 6075dc1d35bc5a883e927973514793602300912f
     }
 }

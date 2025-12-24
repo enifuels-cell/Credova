@@ -11,12 +11,6 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-<<<<<<< HEAD
-        $middleware->alias([
-            'admin' => \App\Http\Middleware\AdminMiddleware::class,
-            'landlord' => \App\Http\Middleware\LandlordMiddleware::class,
-        ]);
-=======
         // Middleware aliases for route-specific use (e.g., 'auth:admin')
         $middleware->alias([
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
@@ -73,12 +67,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $schedule->command('session:gc')
             ->daily()
             ->at('04:00');
->>>>>>> 6075dc1d35bc5a883e927973514793602300912f
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();
-<<<<<<< HEAD
-=======
-
->>>>>>> 6075dc1d35bc5a883e927973514793602300912f

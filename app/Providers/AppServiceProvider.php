@@ -3,10 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-<<<<<<< HEAD
-=======
 use Illuminate\Support\Facades\Vite;
->>>>>>> 6075dc1d35bc5a883e927973514793602300912f
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,27 +20,21 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-<<<<<<< HEAD
-        //
-=======
         // Force HTTPS in production and handle proxy headers (but not in local development)
         if ((app()->environment('production') || $this->isSecureConnection()) && 
             !$this->isLocalDevelopment()) {
             \Illuminate\Support\Facades\URL::forceScheme('https');
             \Illuminate\Support\Facades\URL::forceRootUrl(config('app.url'));
-            
             // Force asset URLs to use HTTPS
             $this->app['url']->forceScheme('https');
-            
             // Force secure cookies
             config([
                 'session.secure' => true,
                 'session.same_site' => 'lax' // Changed from 'none' to 'lax' for better compatibility
             ]);
-            
             Vite::useCspNonce();
         }
-        
+
         // Handle missing manifest gracefully (regardless of environment)
         if (!file_exists(public_path('build/manifest.json'))) {
             $this->createViteFallbacks();
@@ -60,7 +51,7 @@ class AppServiceProvider extends ServiceProvider
         if (!is_dir($buildDir)) {
             mkdir($buildDir, 0755, true);
         }
-        
+
         // Create minimal manifest
         $manifest = [
             'resources/css/app.css' => [
@@ -72,18 +63,18 @@ class AppServiceProvider extends ServiceProvider
                 'isEntry' => true
             ]
         ];
-        
+
         file_put_contents(
             public_path('build/manifest.json'),
             json_encode($manifest, JSON_PRETTY_PRINT)
         );
-        
+
         // Create minimal CSS and JS files
         $assetsDir = public_path('build/assets');
         if (!is_dir($assetsDir)) {
             mkdir($assetsDir, 0755, true);
         }
-        
+
         file_put_contents(public_path('build/assets/app.css'), '/* Fallback CSS */');
         file_put_contents(public_path('build/assets/app.js'), '/* Fallback JS */');
     }
@@ -136,7 +127,7 @@ class AppServiceProvider extends ServiceProvider
         // Check common local hosts
         $host = request()->getHost();
         $localHosts = ['localhost', '127.0.0.1', '::1'];
-        
+
         if (in_array($host, $localHosts) || str_contains($host, '.local')) {
             return true;
         }
@@ -144,8 +135,7 @@ class AppServiceProvider extends ServiceProvider
         // Check for development ports
         $port = request()->getPort();
         $devPorts = [8000, 3000, 5173, 8080]; // Common dev server ports
-        
+
         return in_array($port, $devPorts);
->>>>>>> 6075dc1d35bc5a883e927973514793602300912f
     }
 }

@@ -1,19 +1,4 @@
 <?php
-
-namespace App\Models;
-
-<<<<<<< HEAD
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-
-class User extends Authenticatable
-{
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
-=======
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -39,25 +24,16 @@ use Illuminate\Database\Eloquent\Collection;
 class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasRoles;
->>>>>>> 6075dc1d35bc5a883e927973514793602300912f
 
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
-    protected $fillable = [
+        protected $fillable = [
         'name',
         'email',
         'password',
-<<<<<<< HEAD
-        'role',
-        'phone',
-        'address',
-        'profile_photo',
-        'is_verified',
-        'is_active',
-=======
         'phone',
         'date_of_birth',
         'bio',
@@ -82,7 +58,6 @@ class User extends Authenticatable
         'social_tokens',
         'provider',
         'provider_id',
->>>>>>> 6075dc1d35bc5a883e927973514793602300912f
     ];
 
     /**
@@ -93,12 +68,9 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
-<<<<<<< HEAD
-=======
         'mfa_secret', // Keep MFA secret hidden
         'backup_codes', // Keep backup codes hidden
         'social_tokens', // Keep social tokens hidden
->>>>>>> 6075dc1d35bc5a883e927973514793602300912f
     ];
 
     /**
@@ -111,9 +83,19 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-<<<<<<< HEAD
-            'is_verified' => 'boolean',
-            'is_active' => 'boolean',
+            'date_of_birth' => 'date',
+            'government_id_verified_at' => 'datetime',
+            'phone_verified_at' => 'datetime',
+            'host_verified_at' => 'datetime',
+            'host_verification_documents' => 'array',
+            'recommendation_preferences' => 'array',
+            'backup_codes' => 'array',
+            'last_activity_at' => 'datetime',
+            'risk_score' => 'decimal:2',
+            'device_fingerprints' => 'array',
+            'security_preferences' => 'array',
+            'social_tokens' => 'array',
+            'mfa_enabled' => 'boolean',
         ];
     }
 
@@ -141,71 +123,19 @@ class User extends Authenticatable
         return $this->role === 'tenant';
     }
 
-    /**
-     * Get properties owned by landlord
-     */
-=======
-            'date_of_birth' => 'date',
-            'government_id_verified_at' => 'datetime',
-            'phone_verified_at' => 'datetime',
-            'host_verified_at' => 'datetime',
-            'host_verification_documents' => 'array',
-            'recommendation_preferences' => 'array',
-            'backup_codes' => 'array',
-            'last_activity_at' => 'datetime',
-            'risk_score' => 'decimal:2',
-            'device_fingerprints' => 'array',
-            'security_preferences' => 'array',
-            'social_tokens' => 'array',
-            'mfa_enabled' => 'boolean', // Ensure mfa_enabled is a boolean
-        ];
-    }
-    
-    // ... (Relationship methods remain the same) ...
 
->>>>>>> 6075dc1d35bc5a883e927973514793602300912f
+
+    // Relationships
     public function properties(): HasMany
     {
         return $this->hasMany(Property::class);
     }
 
-<<<<<<< HEAD
-    /**
-     * Get bookings made by tenant
-     */
-=======
->>>>>>> 6075dc1d35bc5a883e927973514793602300912f
     public function bookings(): HasMany
     {
         return $this->hasMany(Booking::class);
     }
 
-<<<<<<< HEAD
-    /**
-     * Get inquiries made by user
-     */
-    public function inquiries(): HasMany
-    {
-        return $this->hasMany(Inquiry::class);
-    }
-
-    /**
-     * Get user's favorite properties
-     */
-    public function favorites(): HasMany
-    {
-        return $this->hasMany(Favorite::class);
-    }
-
-    /**
-     * Get reviews written by user
-     */
-    public function reviews(): HasMany
-    {
-        return $this->hasMany(Review::class);
-    }
-}
-=======
     public function reviewsAsGuest(): HasMany
     {
         return $this->hasMany(Review::class, 'guest_id');
@@ -230,7 +160,7 @@ class User extends Authenticatable
     {
         return $this->hasOne(IdentityVerification::class);
     }
-    
+
     // --- Custom Methods ---
 
     /**
@@ -248,6 +178,11 @@ class User extends Authenticatable
     {
         return $this->host_verified_at !== null;
     }
+
+
+    // --- Accessors for clean data retrieval ---
+
+
     
     /**
      * Get the verification status as a string.
@@ -287,4 +222,3 @@ class User extends Authenticatable
         return $this->identityVerification && $this->identityVerification->status === 'pending';
     }
 }
->>>>>>> 6075dc1d35bc5a883e927973514793602300912f

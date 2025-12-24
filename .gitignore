@@ -3,10 +3,7 @@
 .env
 .env.backup
 .env.production
-<<<<<<< HEAD
-=======
 .env.node
->>>>>>> 6075dc1d35bc5a883e927973514793602300912f
 .phpactor.json
 .phpunit.result.cache
 /.fleet
